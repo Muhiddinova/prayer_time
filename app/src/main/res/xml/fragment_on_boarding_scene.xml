@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/backgroundViewBomdod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <Constraint
+            android:id="@+id/imgBomdod"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/timeBomdod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgBomdod"
+            app:layout_constraintVertical_bias="0.3" />
+        <Constraint
+            android:id="@+id/nameBomdod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeBomdod"
+            app:layout_constraintVertical_bias="0" />
+
+        <Constraint
+            android:id="@+id/backgroundViewZuhr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:rotation="90"
+            android:scaleX="0.2"
+            android:scaleY="0.2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
+        <Constraint
+            android:id="@+id/imgZuhr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:alpha="0"
+            android:rotation="360"
+            android:scaleX="0.3"
+            android:scaleY="0.3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@id/timeZuhr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgZuhr"
+            app:layout_constraintVertical_bias="0.7"
+
+
+            />
+        <Constraint
+            android:id="@+id/nameZuhr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/backgroundViewAsr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:rotation="90"
+            android:scaleX="0.2"
+            android:scaleY="0.2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
+        <Constraint
+            android:id="@+id/imgAsr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:alpha="0"
+            android:rotation="180"
+            android:scaleX="0.3"
+            android:scaleY="0.3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@id/timeAsr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgAsr"
+            app:layout_constraintVertical_bias="0.7" />
+        <Constraint
+            android:id="@+id/nameAsr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+    </ConstraintSet>
+
+
+    <ConstraintSet android:id="@+id/left">
+        <Constraint
+            android:id="@+id/backgroundViewBomdod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
+
+        <Constraint
+            android:id="@+id/imgBomdod"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35" />
+
+        <Constraint
+            android:id="@+id/timeBomdod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgBomdod"
+            app:layout_constraintVertical_bias="0.7" />
+        <Constraint
+            android:id="@+id/nameBomdod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <Constraint
+            android:id="@+id/backgroundViewZuhr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+        <Constraint
+            android:id="@+id/imgZuhr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@id/timeZuhr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgZuhr"
+            app:layout_constraintVertical_bias="0.3"
+
+
+            />
+        <Constraint
+            android:id="@+id/nameZuhr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeZuhr"
+            app:layout_constraintVertical_bias="0" />
+
+        <Constraint
+            android:id="@+id/backgroundViewAsr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0"
+            android:rotation="90"
+            android:scaleX="0.2"
+            android:scaleY="0.2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
+        <Constraint
+            android:id="@+id/imgAsr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:alpha="0"
+            android:rotation="180"
+            android:scaleX="0.3"
+            android:scaleY="0.3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@id/timeAsr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgAsr"
+            app:layout_constraintVertical_bias="0.7" />
+        <Constraint
+            android:id="@+id/nameAsr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            android:scaleX="0.4"
+            android:scaleY="0.4"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+
+    </ConstraintSet>
+    <Transition
+        android:id="@+id/toLeft"
+        app:constraintSetEnd="@+id/left"
+        app:constraintSetStart="@id/start">
+        <OnSwipe
+            app:dragDirection="dragLeft"
+            app:touchAnchorSide="left" />
+        <KeyFrameSet>
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="90"
+                android:scaleX="0.2"
+                android:scaleY="0.2"
+                app:framePosition="100"
+                app:motionTarget="@+id/backgroundViewBomdod" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="360"
+                android:scaleX="0.3"
+                android:scaleY="0.3"
+                app:framePosition="100"
+                app:motionTarget="@+id/imgBomdod" />
+            <KeyAttribute
+                android:alpha="0"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="100"
+                app:motionTarget="@+id/timeBomdod" />
+            <KeyAttribute
+                android:alpha="0"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="50"
+                app:motionTarget="@+id/nameBomdod" />
+            <KeyAttribute
+                android:alpha="1"
+                android:rotation="0"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/backgroundViewZuhr" />
+            <KeyAttribute
+                android:alpha="1"
+                android:rotation="0"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/imgZuhr" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/timeZuhr" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/nameZuhr" />
+            <KeyAttribute
+                android:alpha="0"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="50"
+                app:motionTarget="@+id/nameZuhr" />
+
+        </KeyFrameSet>
+
+    </Transition>
+
+
+    <ConstraintSet android:id="@+id/end">
+
+
+        <Constraint
+            android:id="@+id/backgroundViewBomdod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
+
+        <Constraint
+            android:id="@+id/imgBomdod"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35" />
+
+        <Constraint
+            android:id="@+id/timeBomdod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/backgroundViewFirst"
+            app:layout_constraintVertical_bias="0.7" />
+        <Constraint
+            android:id="@+id/nameBomdod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <Constraint
+            android:id="@+id/backgroundViewZuhr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:rotation="90"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.15" />
+        <Constraint
+            android:id="@+id/imgZuhr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.35" />
+        <Constraint
+            android:id="@id/timeZuhr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imgZuhr"
+            app:layout_constraintVertical_bias="0.7" />
+        <Constraint
+            android:id="@+id/nameZuhr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:alpha="0"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent" />
+        <Constraint
+            android:id="@+id/backgroundViewAsr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+        <Constraint
+            android:id="@+id/imgAsr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="100dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <Constraint
+            android:id="@id/timeAsr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgAsr"
+            app:layout_constraintVertical_bias="0.3" />
+        <Constraint
+            android:id="@+id/nameAsr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/timeAsr"
+            app:layout_constraintVertical_bias="0" />
+
+
+    </ConstraintSet>
+
+    <Transition
+        android:id="@+id/toEnd"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@+id/left">
+        <KeyFrameSet>
+            <KeyAttribute
+                android:alpha="1"
+                android:rotation="0"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/backgroundViewAsr" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="90"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="100"
+                app:motionTarget="@+id/backgroundViewZuhr" />
+            <KeyAttribute
+                android:alpha="0"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="100"
+                app:motionTarget="@+id/timeZuhr" />
+            <KeyAttribute
+                android:alpha="0"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="50"
+                app:motionTarget="@+id/nameZuhr" />
+            <KeyAttribute
+                android:alpha="0"
+                android:rotation="360"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="100"
+                app:motionTarget="@+id/imgZuhr" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/timeAsr" />
+            <KeyAttribute
+                android:alpha="1"
+                android:scaleX="1"
+                android:scaleY="1"
+                app:framePosition="100"
+                app:motionTarget="@+id/nameAsr" />
+            <KeyAttribute
+                android:alpha="0"
+                android:scaleX="0.4"
+                android:scaleY="0.4"
+                app:framePosition="50"
+                app:motionTarget="@+id/nameAsr" />
+
+
+        </KeyFrameSet>
+        <OnSwipe
+            app:dragDirection="dragLeft"
+            app:touchAnchorSide="left" />
+
+
+    </Transition>
+
+
+</MotionScene>

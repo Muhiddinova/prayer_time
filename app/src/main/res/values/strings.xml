@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Prayer Time</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="_6_45">6:45</string>
+    <string name="bomdod">Bomdod</string>
+    <string name="zuhr">Zuhr</string>
+    <string name="_12_42">12:42</string>
+</resources>

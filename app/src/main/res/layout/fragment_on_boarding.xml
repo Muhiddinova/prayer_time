@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_on_boarding_scene"
+        app:showPaths="false"
+        tools:context=".ui.time.OnBoardingFragment"
+        tools:ignore="MotionLayoutInvalidSceneFileReference">
+
+        <View
+            android:id="@+id/backgroundViewBomdod"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#039BE5" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgBomdod"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_sunrise"
+            tools:ignore="MissingConstraints" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/timeBomdod"
+            style="@style/Title"
+            android:text="@string/_6_45" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nameBomdod"
+            style="@style/Title"
+            android:text="@string/bomdod" />
+
+
+        <View
+            android:id="@+id/backgroundViewZuhr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#43A047" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgZuhr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_sun" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/timeZuhr"
+            style="@style/Title"
+            android:text="@string/_12_42" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nameZuhr"
+            style="@style/Title"
+            android:text="@string/zuhr" />
+
+        <View
+            android:id="@id/backgroundViewAsr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FDD835" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgAsr"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_eclipse" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/timeAsr"
+            style="@style/Title"
+            android:text="16:10" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/nameAsr"
+            style="@style/Title"
+            android:layout_width="54dp"
+            android:layout_height="64dp"
+            android:text="Asr" />
+
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

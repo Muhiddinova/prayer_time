@@ -1,0 +1,42 @@
+package com.example.prayertime.ui.home
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.example.prayertime.R
+import com.example.prayertime.databinding.RvItemBinding
+
+class AdapterHome():RecyclerView.Adapter<AdapterHome.VH>() {
+
+private var list= listOf<Model>()
+    fun setData(list: List<Model>) {
+        this.list = list
+        notifyDataSetChanged()
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterHome.VH {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding:RvItemBinding = DataBindingUtil.inflate(inflater, R.layout.rv_item,parent,false)
+        return VH(binding)
+
+    }
+
+    override fun onBindViewHolder(holder: AdapterHome.VH, position: Int) {
+        holder.onBind(list[position])
+    }
+
+    override fun getItemCount(): Int = list.size
+
+
+    class VH(private val binding:RvItemBinding) :RecyclerView.ViewHolder(binding.root){
+        fun onBind(model:Model){
+            with(binding) {
+                this.tvItem.text =model.text
+                this.ivMain.setImageDrawable(model.image)
+
+            }
+        }
+
+    }
+}
