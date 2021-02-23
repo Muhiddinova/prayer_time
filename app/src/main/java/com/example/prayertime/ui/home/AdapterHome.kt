@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.prayertime.R
 import com.example.prayertime.databinding.RvItemBinding
 
-class AdapterHome():RecyclerView.Adapter<AdapterHome.VH>() {
+class AdapterHome(private val listener:RvItemListener):RecyclerView.Adapter<AdapterHome.VH>() {
+    interface RvItemListener{
+        fun onClicked(model: Model)
+    }
 
 private var list= listOf<Model>()
     fun setData(list: List<Model>) {
@@ -23,6 +26,9 @@ private var list= listOf<Model>()
     }
 
     override fun onBindViewHolder(holder: AdapterHome.VH, position: Int) {
+        holder.itemView.setOnClickListener {
+            listener.onClicked(list[position])
+        }
         holder.onBind(list[position])
     }
 

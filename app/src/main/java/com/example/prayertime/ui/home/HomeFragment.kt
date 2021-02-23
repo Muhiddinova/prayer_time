@@ -12,7 +12,7 @@ import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentHomeBinding
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -64,10 +64,13 @@ class HomeFragment : Fragment() {
 
     private fun setRv() {
         val list = getList()
-        val adapter = AdapterHome()
+        val adapter = AdapterHome(this)
         adapter.setData(list)
-        binding.rvMain.layoutManager=GridLayoutManager(activity,3)
-        binding.rvMain.adapter=adapter
+        binding.rvMain.layoutManager = GridLayoutManager(activity, 3)
+        binding.rvMain.adapter = adapter
+    }
+
+    override fun onClicked(model: Model) {
     }
 
 
