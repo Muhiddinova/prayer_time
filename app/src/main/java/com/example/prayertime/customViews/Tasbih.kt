@@ -40,7 +40,7 @@ class Tasbih @JvmOverloads constructor(
     private var animatedValue = 100
     private var listYPos = arrayListOf<Float>()
     private var listSizes = arrayListOf<Int>()
-    private var isAnimationstart = false
+    private var isAnimationStart = false
 
     init {
         bitmap = ContextCompat.getDrawable(
@@ -95,10 +95,10 @@ class Tasbih @JvmOverloads constructor(
     }
 
     fun startAnimation() {
-        valueAnimator.duration = 1000
+        valueAnimator.duration = 500
         valueAnimator.interpolator = AccelerateDecelerateInterpolator()
         valueAnimator.addUpdateListener(this)
-        isAnimationstart = true
+        isAnimationStart = true
         valueAnimator.start()
     }
 
@@ -106,7 +106,7 @@ class Tasbih @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        if (isAnimationstart)
+        if (isAnimationStart)
             drawCircleWithAnimation(canvas)
         else
             drawCircle(canvas)
@@ -151,7 +151,7 @@ class Tasbih @JvmOverloads constructor(
             }
         }
         if (animatedValue == 100) {
-            isAnimationstart = false
+            isAnimationStart = false
         }
     }
 

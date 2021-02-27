@@ -1,4 +1,4 @@
-package com.example.prayertime.ui.kabaOnline
+package com.example.prayertime.ui.prayer
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.prayertime.R
 
-class KabaOnlineFragment : Fragment() {
+class PrayerFragment : Fragment() {
 
     companion object {
-        fun newInstance() = KabaOnlineFragment()
+        fun newInstance() = PrayerFragment()
     }
 
-    private lateinit var viewModel: KabaOnlineViewModel
+    private lateinit var viewModel: PrayerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.kaba_online_fragment, container, false)
+        return inflater.inflate(R.layout.prayer_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(KabaOnlineViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(PrayerViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

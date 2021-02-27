@@ -1,4 +1,4 @@
-package com.example.prayertime.ui.prayerTime
+package com.example.prayertime.ui.mosque
 
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -8,24 +8,24 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.prayertime.R
 
-class PrayerFragment : Fragment() {
+class MosqueFragment : Fragment() {
 
     companion object {
-        fun newInstance() = PrayerFragment()
+        fun newInstance() = MosqueFragment()
     }
 
-    private lateinit var viewModel: PrayerViewModel
+    private lateinit var viewModel: MosqueViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.prayer_fragment, container, false)
+        return inflater.inflate(R.layout.mosque_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PrayerViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MosqueViewModel::class.java)
         // TODO: Use the ViewModel
     }
 

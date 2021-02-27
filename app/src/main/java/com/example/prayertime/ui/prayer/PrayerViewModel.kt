@@ -1,4 +1,4 @@
-package com.example.prayertime.ui.prayerTime
+package com.example.prayertime.ui.prayer
 
 import androidx.lifecycle.ViewModel
 

@@ -6,4 +6,6 @@
     <string name="bomdod">Bomdod</string>
     <string name="zuhr">Zuhr</string>
     <string name="_12_42">12:42</string>
+    <string name="gregorian">Gregorian</string>
+    <string name="hijri">Hijri</string>
 </resources>
