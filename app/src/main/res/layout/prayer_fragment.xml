@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/ic__1"
-    android:scaleX="1.2"
     tools:context=".ui.prayer.PrayerFragment">
     <SearchView
         android:layout_marginTop="50dp"
