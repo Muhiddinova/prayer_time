@@ -56,6 +56,7 @@ dependencies {
     implementation 'com.github.eltohamy:material-hijri-calendarview:1.1.2'
     implementation 'net.alhazmy13.hijridatepicker:library:3.0.0'
     api group: 'com.github.msarhan', name: 'ummalqura-calendar', version: '2.0.1'
+    implementation 'com.github.ahmedeltaher:Azan:3.0'
 
 
 }

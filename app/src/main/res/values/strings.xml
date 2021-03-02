@@ -8,4 +8,5 @@
     <string name="_12_42">12:42</string>
     <string name="gregorian">Gregorian</string>
     <string name="hijri">Hijri</string>
+    <string name="_00_00">00:00</string>
 </resources>

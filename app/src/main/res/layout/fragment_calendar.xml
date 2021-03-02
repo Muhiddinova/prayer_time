@@ -36,9 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="320dp"
                 android:scrollbarFadeDuration="3000"
-                app:layout_constraintTop_toBottomOf="@+id/calendarText"
-
-                />
+                app:layout_constraintTop_toBottomOf="@+id/calendarText" />
 
             <com.github.eltohamy.materialhijricalendarview.MaterialHijriCalendarView
                 android:id="@+id/calendarHijri"

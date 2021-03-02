@@ -21,6 +21,9 @@ class CalendarFragment : Fragment() {
     ): View{
         // Inflate the layout for this fragment
        binding=DataBindingUtil.inflate(inflater,R.layout.fragment_calendar, container, false)
+//
+//        binding.calendarHijri.setTitleMonths(arrayOf("Jumadil","Rajab","Sha'bon","Ramazon","Shavval","Zulqa'da","Zulhijja",
+//        "zdfvzdfv","zdfbdbgb","zdfvzdfvdf","asdvdsf","SDvzfdvdfvfd"))
         binding.btnCalendar.setOnClickListener {
             if (binding.btnCalendar.text=="Hijri")
             {  binding.calendarGregorian.visibility=View.GONE
@@ -35,6 +38,7 @@ class CalendarFragment : Fragment() {
                 binding.calendarText.text="Gregorian"
             }
         }
+
         return binding.root
     }
 
