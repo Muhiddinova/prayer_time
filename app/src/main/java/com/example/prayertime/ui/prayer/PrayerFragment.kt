@@ -46,52 +46,52 @@ class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
                 }!!
             ),
             Model(1,
-                "Hammasi",
+                "Tonggi va kechki ",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Namozdagi duo...",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Uy va oilada",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Qiyinchilik kel...",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Kasal bo'lganda",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Tabiat",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Xaj va Umra",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Sayohat",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Sahobalarning duo...",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
             Model(1,
-                "Hammasi",
+                "Boshqalar",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),

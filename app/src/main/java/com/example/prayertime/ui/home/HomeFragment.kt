@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentHomeBinding
+import java.text.DateFormat
+import java.util.*
 
 
 class HomeFragment : Fragment(), AdapterHome.RvItemListener {
@@ -25,6 +27,12 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         binding.linear.setOnClickListener {
             findNavController().navigate(R.id.prayerTimeFragment)
         }
+        val currentDateTimeString = DateFormat.getDateTimeInstance().format(Date())
+
+// textView is the TextView view that should display it
+
+// textView is the TextView view that should display it
+       binding.homeTime.text=currentDateTimeString
         setRv()
         return binding.root
     }
@@ -32,19 +40,23 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     private fun getList(): List<Model> {
         return listOf(
 
-            Model(1,
+            Model(
+                1,
                 "Tasbeh",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads) }!!
             ),
-            Model(2,
+            Model(
+                2,
                 "Duo",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_dua_hands) }!!
             ),
-            Model(3,
+            Model(
+                3,
                 "Qibla",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_qibla) }!!
             ),
-            Model(4,
+            Model(
+                4,
                 "Masjid",
                 requireContext().let {
                     ContextCompat.getDrawable(
@@ -53,11 +65,13 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
                     )
                 }!!
             ),
-            Model(5,
+            Model(
+                5,
                 "Ma'ruza",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_cassette) }!!
             ),
-            Model(6,
+            Model(
+                6,
                 "Kalendar",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_calendar) }!!
             )
@@ -75,23 +89,23 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     }
 
     override fun onClicked(model: Model) {
-        when(model.id){
-            1->findNavController().navigate(
+        when (model.id) {
+            1 -> findNavController().navigate(
                 R.id.tasbeehFragment
             )
-            2-> findNavController().navigate(
+            2 -> findNavController().navigate(
                 R.id.prayerFragment
             )
-            3->findNavController().navigate(
+            3 -> findNavController().navigate(
                 R.id.compassFragment
             )
-            4->findNavController().navigate(
+            4 -> findNavController().navigate(
                 R.id.mosqueFragment
             )
-            5->findNavController().navigate(
+            5 -> findNavController().navigate(
                 R.id.audioFragment
             )
-            6->findNavController().navigate(
+            6 -> findNavController().navigate(
                 R.id.calendarFragment
             )
         }

@@ -20,6 +20,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/homeTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="16:00"
@@ -35,6 +36,7 @@
 
 
             <androidx.recyclerview.widget.RecyclerView
+                app:layout_constraintTop_toBottomOf="@id/linear"
                 android:id="@+id/rvMain"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

@@ -42,9 +42,7 @@
                 android:id="@+id/calendarHijri"
                 android:layout_width="wrap_content"
                 android:layout_height="320dp"
-                android:visibility="gone"
-                app:mcv_selectionColor="#00F"
-                app:mcv_showOtherDates="all" />
+                android:visibility="gone" />
         </LinearLayout>
 
         <Button

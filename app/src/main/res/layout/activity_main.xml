@@ -8,16 +8,7 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <ImageView
-            android:id="@+id/menu"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:elevation="4dp"
-            android:layout_marginTop="16sp"
-            android:layout_marginStart="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_menu_4_line"/>
+
         <ImageView
             android:id="@+id/setting"
             android:layout_width="30dp"
