@@ -26,23 +26,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/relativeLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_centerHorizontal="true">
 
             <com.example.prayertime.customViews.Tasbih
                 android:id="@+id/imgRound"
                 android:layout_width="120dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="82dp"
-                android:layout_marginBottom="16dp" />
+                android:layout_height="500dp"
+                android:padding="82dp"
+                android:paddingTop="82dp"
+                android:layout_gravity="center_vertical"/>
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <ImageView
             android:id="@+id/refresh"

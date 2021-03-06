@@ -20,6 +20,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -44,6 +45,7 @@ class CompassFragment : Fragment() {
     private var longtitude: Float = 0f
     private var lattitude: Float = 0f
     private var result: Double = 0.0
+    private var intDegree: Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,9 +60,10 @@ class CompassFragment : Fragment() {
 
         getLocation()
         degree = getDegree()
+        intDegree = degree.toInt()
 
         Log.d("gps", "getLocation  : $degree")
-
+        binding.tvLocation.text = "$intDegree Degree "
         return binding.root
     }
 
@@ -127,8 +130,12 @@ class CompassFragment : Fragment() {
                     anim.repeatCount = 0
                     anim.fillAfter = true
 
+//                    binding.tvPosition.text = ("Your current position: $degree")
+//                    binding.tvPosition.width
                     binding.imgCompass.startAnimation(anim)
-                }
+                } else{}
+            } else{
+                Toast.makeText(requireContext(), "THERE IS NO TYPE_ACCELEROMETER OR TYPE_MAGNETIC_FIELD", Toast.LENGTH_SHORT).show()
             }
         }
     }

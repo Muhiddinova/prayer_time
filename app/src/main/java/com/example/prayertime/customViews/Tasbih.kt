@@ -121,10 +121,15 @@ class Tasbih @JvmOverloads constructor(
             if (i % 2 == 0) {
                 val size =
                     (listSizes[i + 1] - listSizes[i - 1]) * animatedValue / 100 + listSizes[i - 1]
-                if (i == 16) {
-                    paint.alpha = 255 - 255 * animatedValue / 100
-                } else
-                    paint.alpha = 255
+                when (i) {
+                    16 -> {
+                        paint.alpha = 255 - 255 * animatedValue / 100
+                    }
+                    2 -> {
+                        paint.alpha = 255 * animatedValue / 100
+                    }
+                    else -> paint.alpha = 255
+                }
 
                 getBitmap(size)?.let {
                     canvas?.drawBitmap(

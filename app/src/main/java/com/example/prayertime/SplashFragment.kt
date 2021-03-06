@@ -20,14 +20,13 @@ class SplashFragment : Fragment() {
 
 
     private fun waitAndOpenOtherFragment(){
-
         timer= Timer()
         timer.schedule(object :TimerTask(){
             override fun run() {
                 findNavController().navigate(R.id.homeFragment)
             }
 
-        },1500)
+        },1300)
 
         }
 
