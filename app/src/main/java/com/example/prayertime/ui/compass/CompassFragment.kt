@@ -22,6 +22,7 @@ class CompassFragment : Fragment() {
 
 
     ): View? {
+
         return inflater.inflate(R.layout.compass_fragment, container, false)
     }
 
