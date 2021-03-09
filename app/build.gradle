@@ -57,6 +57,7 @@ dependencies {
     implementation 'net.alhazmy13.hijridatepicker:library:3.0.0'
     api group: 'com.github.msarhan', name: 'ummalqura-calendar', version: '2.0.1'
     implementation 'com.github.ahmedeltaher:Azan:3.0'
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
 
 }

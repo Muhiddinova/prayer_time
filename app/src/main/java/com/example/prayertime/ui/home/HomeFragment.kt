@@ -93,17 +93,17 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
             1 -> findNavController().navigate(
                 R.id.tasbeehFragment
             )
-            2 -> findNavController().navigate(
+            2-> findNavController().navigate(
                 R.id.prayerFragment
             )
-            3 -> findNavController().navigate(
+           3 -> findNavController().navigate(
                 R.id.compassFragment
             )
             4 -> findNavController().navigate(
                 R.id.mosqueFragment
             )
             5 -> findNavController().navigate(
-                R.id.audioFragment
+                R.id.mediaFragment
             )
             6 -> findNavController().navigate(
                 R.id.calendarFragment

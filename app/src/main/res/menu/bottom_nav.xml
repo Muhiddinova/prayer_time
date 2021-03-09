@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:icon="@drawable/ic_radio_2_line"
+        android:id="@+id/radioFragment"
+        android:title="radio" />
+    <item
+        android:icon="@drawable/ic_music_line"
+        android:id="@+id/audioFragment2"
+        android:title="audio" />
+    <item
+        android:icon="@drawable/ic_youtube_line"
+        android:id="@+id/youTubeFragment2"
+        android:title="youTube" />
+
+</menu>
