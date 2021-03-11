@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
-import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.hardware.SensorEventListener
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -30,7 +30,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class CompassFragment : Fragment() {
+class CompassFragment : Fragment(), SensorEventListener, LocationListener {
 
     private var mGravity: FloatArray = FloatArray(3)
     private var mGeomagnetic: FloatArray = FloatArray(3)

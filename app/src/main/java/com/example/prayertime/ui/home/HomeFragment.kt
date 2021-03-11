@@ -122,9 +122,9 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
             4 -> findNavController().navigate(
                 R.id.mosqueFragment
             )
-            5 -> findNavController().navigate(
-                R.id.audioFragment
-            )
+//            5 -> findNavController().navigate(
+//                R.id.audioFragment
+//            )
             6 -> findNavController().navigate(
                 R.id.calendarFragment
             )
