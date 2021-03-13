@@ -2,12 +2,16 @@ package com.example.prayertime.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prayertime.R
 import com.example.prayertime.databinding.RvItemBinding
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 
 class AdapterHome(private val listener:RvItemListener):RecyclerView.Adapter<AdapterHome.VH>() {
+
+
     interface RvItemListener{
         fun onClicked(model: Model)
     }

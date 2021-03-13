@@ -153,7 +153,7 @@ class PrayerTimeFragment : Fragment() {
     }
 
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "SimpleDateFormat")
     private fun prayerTime() {
         mLocation?.let {
             val today = SimpleDate(GregorianCalendar())

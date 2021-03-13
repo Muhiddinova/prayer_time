@@ -62,6 +62,18 @@
         android:name="com.example.prayertime.ui.audio.MediaFragment"
         android:label="MediaFragment"
         tools:layout="@layout/fragment_media" />
+    <fragment
+        android:id="@+id/audioFragment"
+        android:name="com.example.prayertime.ui.audio.AudioFragment"
+        android:label="AudioFragment" />
+    <fragment
+        android:id="@+id/radioFragment2"
+        android:name="com.example.prayertime.ui.audio.RadioFragment"
+        android:label="RadioFragment" />
+    <fragment
+        android:id="@+id/youTubeFragment"
+        android:name="com.example.prayertime.ui.audio.YouTubeFragment"
+        android:label="YouTubeFragment" />
 
 
 </navigation>

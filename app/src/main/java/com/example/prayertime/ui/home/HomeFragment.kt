@@ -1,8 +1,7 @@
 package com.example.prayertime.ui.home
 
+import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.view.LayoutInflater
@@ -12,7 +11,6 @@ import android.widget.Chronometer
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.prayertime.R
@@ -24,6 +22,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
     private lateinit var binding: FragmentHomeBinding
     var broadcastReceiver: BroadcastReceiver? = null
+    @SuppressLint("SimpleDateFormat")
     var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
     var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.YYYY")
 
@@ -122,9 +121,9 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
             4 -> findNavController().navigate(
                 R.id.mosqueFragment
             )
-//            5 -> findNavController().navigate(
-//                R.id.audioFragment
-//            )
+            5 -> findNavController().navigate(
+                R.id.mediaFragment
+            )
             6 -> findNavController().navigate(
                 R.id.calendarFragment
             )
