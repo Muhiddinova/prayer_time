@@ -60,4 +60,7 @@ dependencies {
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
 
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+
 }

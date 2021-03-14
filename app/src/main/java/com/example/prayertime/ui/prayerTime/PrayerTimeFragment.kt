@@ -50,7 +50,6 @@ class PrayerTimeFragment : Fragment() {
     private lateinit var prefs: SharedPreferences
     private var location: android.location.Location? = null
     private var hasLocationPermission = false
-
     private var mLocation: Location? = null
 
 
