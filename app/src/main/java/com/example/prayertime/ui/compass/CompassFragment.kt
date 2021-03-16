@@ -81,16 +81,14 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
         viewModel = ViewModelProvider(this).get(CompassViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.compass_new, container, false)
         binding.imgCompass.startAnimation()
+
+        locationManager =
+            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         sensorManager =
             (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager?)!!
         if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null ||
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) == null
         ) {
-//            Toast.makeText(
-//                requireContext(),
-//                "THERE IS NO TYPE_ACCELEROMETER OR TYPE_MAGNETIC_FIELD",
-//                Toast.LENGTH_SHORT
-//            ).show()
             AlertDialog.Builder(context)
                 .setMessage("Siznig qurilmangizda compass datchiklari mavjud emas.")
                 .setPositiveButton(
@@ -100,6 +98,7 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                 .show()
 
         }
+        gmt = TimeZone.getDefault()
         Log.d("CompassFragment:", "sensorManager $sensorManager")
         getLocation()
         degree = getDegree()
@@ -134,7 +133,7 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
         val alpha: Float = 0.97f
         synchronized(this) {
             if (sensorEvent != null) {
-                Log.d("CompassFragment", "sensorEvent: $sensorEvent")
+//                Log.d("CompassFragment", "sensorEvent: $sensorEvent")
                 if (sensorEvent.sensor.type == Sensor.TYPE_ACCELEROMETER) {
                     mGravity[0] = alpha * mGravity[0] + (1 - alpha) * sensorEvent.values[0]
                     mGravity[1] = alpha * mGravity[1] + (1 - alpha) * sensorEvent.values[1]
@@ -193,50 +192,69 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
     private fun getLocation() {
         Log.d("CompassFragment", "getLocation: getLocation working")
 
-        val mFusedLoactionProvider =
-            LocationServices.getFusedLocationProviderClient(requireContext())
-        if (ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
+//        val mFusedLoactionProvider =
+//            LocationServices.getFusedLocationProviderClient(requireContext())
+//        if (ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return
+//        }
+//        mFusedLoactionProvider.locationAvailability
+//            .addOnSuccessListener {
+//                if (!it.isLocationAvailable) {
+//                    AlertDialog.Builder(context)
+//                        .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqing.")
+//                        .setPositiveButton(
+//                            "Sozlamalarni ochish"
+//                        ) { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+//                        .setNegativeButton("Qolish", null)
+//                        .setOnDismissListener {
+//                            getSavedLocation()
+//                        }
+//                        .show()
+//
+//
+//                } else {
+//                    getLocationWhileGPSEnabled()
+//                }
+//
+//            }
+//            .addOnFailureListener {
+//                Log.e("CompassFragment", "getLocation: $it")
+//            }
+//            .addOnCanceledListener {
+//                Log.e("CompassFragment", "getLocation: operation canceled")
+//            }
+
+
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder(requireContext())
+                .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
+                .setPositiveButton(
+                    "Sozlamalarni ochish"
+                ) { _, _ -> this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                .setOnDismissListener{findNavController().popBackStack()}
+                .show()
+            getSavedLocation()
+        } else {
+            getLocationWhileGPSEnabled()
         }
-        mFusedLoactionProvider.locationAvailability
-            .addOnSuccessListener {
-                if (!it.isLocationAvailable) {
-                    AlertDialog.Builder(context)
-                        .setMessage("gps_network_not_enabled")
-                        .setPositiveButton(
-                            "open_location_settings"
-                        ) { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                        .setNegativeButton("Cancel", null)
-                        .show()
-                } else {
-                    getLocationWhileGPSEnabled()
-                }
-            }
-            .addOnFailureListener {
-                Log.e("CompassFragment", "getLocation: $it")
-            }
-            .addOnCanceledListener {
-                Log.e("CompassFragment", "getLocation: operation canceled")
-            }
+
     }
 
     fun getLocationWhileGPSEnabled() {
-        locationManager =
-            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if ((ContextCompat.checkSelfPermission(
                 requireContext(),
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -258,9 +276,11 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                 longtitude = it.longitude.toFloat()
             }
         }
+        savePrefs()
     }
 
     private fun savePrefs() {
+        prefs = activity?.getPreferences(Context.MODE_PRIVATE)!!
         prefs.edit()
             .putString(LATITUDE, latitude)
             .putString(LONGITUDE, longitude)
