@@ -6,10 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentMediaBinding
 
@@ -22,11 +18,7 @@ class MediaFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_media, container, false)
-
-
-
 
         binding.bottomNavigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {

@@ -16,63 +16,62 @@ class Compass @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-): View(context, attrs, defStyle), ValueAnimator.AnimatorUpdateListener {
+) : View(context, attrs, defStyle), ValueAnimator.AnimatorUpdateListener {
 
-    private var valueAnimator = ValueAnimator.ofInt(1, 100)
-    private val paint = Paint()
+    private var mValueAnimator = ValueAnimator.ofInt(1, 100)
+    private val sPaint = Paint()
     private val dp = resources.displayMetrics.density
-    private var bitmap: Bitmap? = null
-    private var animatedValue = 100
-    private var isAnimationStart = false
+    private var mBitmap: Bitmap? = null
+    private var mAnimatedValue = 100
+    private var mIsAnimationStart = false
+
 
     init {
-        bitmap = ContextCompat.getDrawable(
+        mBitmap = ContextCompat.getDrawable(
             context,
             R.drawable.ic_compass
         )?.toBitmap()
-    }
-
-    fun startAnimation() {
-        valueAnimator.duration = 500
-        valueAnimator.interpolator = AccelerateDecelerateInterpolator()
-        valueAnimator.addUpdateListener(this)
-        isAnimationStart = true
-        valueAnimator.start()
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         drawCircle(canvas)
-//        if (isAnimationStart)
-//            drawCircleWithAnimation(canvas)
-//        else
-//            drawCircle(canvas)
-
     }
+
+
+    override fun onAnimationUpdate(animator: ValueAnimator?) {
+        mAnimatedValue = animator?.animatedValue as Int
+        invalidate()
+    }
+
+
+    fun startAnimation() {
+        mValueAnimator.duration = 500
+        mValueAnimator.interpolator = AccelerateDecelerateInterpolator()
+        mValueAnimator.addUpdateListener(this)
+        mIsAnimationStart = true
+        mValueAnimator.start()
+    }
+
 
     private fun getBitmap(size: Int): Bitmap? {
-        return if (bitmap != null) {
-            Bitmap.createScaledBitmap(bitmap!!, size, size, true)
-        } else {
-            null
-        }
+        return if (mBitmap != null) {
+            Bitmap.createScaledBitmap(mBitmap!!, size, size, true)
+        } else null
     }
+
 
     private fun drawCircle(canvas: Canvas?) {
         getBitmap(100)?.let {
             canvas?.drawBitmap(
                 it,
                 (measuredWidth / 2 - 50f),
-                (measuredHeight/2 - 370f),
-                paint
+                (measuredHeight / 2 - 370f),
+                sPaint
             )
         }
     }
 
-    override fun onAnimationUpdate(animator: ValueAnimator?) {
-        animatedValue = animator?.animatedValue as Int
-        invalidate()
-    }
 
 }

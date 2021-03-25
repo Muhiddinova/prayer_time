@@ -6,10 +6,7 @@
     app:startDestination="@id/splashFragment">
 
 
-    <fragment
-        android:id="@+id/onBoardingFragment"
-        android:name="com.example.prayertime.ui.time.OnBoardingFragment"
-        android:label="OnBoardingFragment" />
+
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.example.prayertime.SplashFragment"
@@ -27,7 +24,6 @@
 
     <fragment
 
-
         android:id="@+id/homeFragment"
         android:name="com.example.prayertime.ui.home.HomeFragment"
         android:label="HomeFragment" />
@@ -35,22 +31,22 @@
         android:id="@+id/compassFragment"
         android:name="com.example.prayertime.ui.compass.CompassFragment"
         android:label="compass_fragment"
-        tools:layout="@layout/compass_fragment" />
+        tools:layout="@layout/fragment_compass" />
     <fragment
         android:id="@+id/mosqueFragment"
         android:name="com.example.prayertime.ui.mosque.MosqueFragment"
         android:label="kaba_online_fragment"
-        tools:layout="@layout/mosque_fragment" />
+        tools:layout="@layout/fragment_mosque" />
     <fragment
         android:id="@+id/prayerFragment"
         android:name="com.example.prayertime.ui.prayer.PrayerFragment"
         android:label="prayer_fragment"
-        tools:layout="@layout/prayer_fragment" />
+        tools:layout="@layout/fragment_prayer" />
     <fragment
         android:id="@+id/prayerTimeFragment"
         android:name="com.example.prayertime.ui.prayerTime.PrayerTimeFragment"
         android:label="prayer_time_fragment"
-        tools:layout="@layout/prayer_time_fragment" />
+        tools:layout="@layout/fragment_prayer_time" />
 
     <fragment
         android:id="@+id/calendarFragment"

@@ -22,33 +22,22 @@ class Tasbih @JvmOverloads constructor(
 ) :
     View(context, attrs, defStyle), ValueAnimator.AnimatorUpdateListener {
 
-
-//    val bouncer = AnimatorSet()
-//    bouncer.play(bounceAnim).before(squashAnim1)
-//    bouncer.play(squashAnim1).before(squashAnim2)
-//    val fadeAnim = ObjectAnimator.ofFloat(newBall, “alpha”, 1f, 0f)
-//    fadeAnim.duration = 250
-//    val animatorSet = AnimatorSet()
-//    animatorSet.play(bouncer).before(fadeAnim)
-//    animatorSet.start()
-
-
-    private var valueAnimator = ValueAnimator.ofInt(1, 100)
-    private val paint = Paint()
+    private var mValueAnimator = ValueAnimator.ofInt(1, 100)
+    private val sPaint = Paint()
     private val dp = resources.displayMetrics.density
-    private var bitmap: Bitmap? = null
-    private var animatedValue = 100
-    private var listYPos = arrayListOf<Float>()
-    private var listSizes = arrayListOf<Int>()
-    private var isAnimationStart = false
+    private var mBitmap: Bitmap? = null
+    private var mAnimatedValue = 100
+    private var mListYPos = arrayListOf<Float>()
+    private var mListSizes = arrayListOf<Int>()
+    private var mIsAnimationStart = false
+
 
     init {
-        bitmap = ContextCompat.getDrawable(
+        mBitmap = ContextCompat.getDrawable(
             context,
             R.drawable.tasbih
         )?.toBitmap()
-
-        listYPos = arrayListOf(
+        mListYPos = arrayListOf(
             -36 * dp,
             -28 * dp,
             4 * dp,
@@ -69,8 +58,7 @@ class Tasbih @JvmOverloads constructor(
             484 * dp,
             516 * dp
         )
-
-        listSizes = arrayListOf(
+        mListSizes = arrayListOf(
             (4 * dp).toInt(),
             (28 * dp).toInt(),
             (4 * dp).toInt(),
@@ -94,41 +82,46 @@ class Tasbih @JvmOverloads constructor(
 
     }
 
-    fun startAnimation() {
-        valueAnimator.duration = 500
-        valueAnimator.interpolator = AccelerateDecelerateInterpolator()
-        valueAnimator.addUpdateListener(this)
-        isAnimationStart = true
-        valueAnimator.start()
-    }
-
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-
-        if (isAnimationStart)
-            drawCircleWithAnimation(canvas)
-        else
-            drawCircle(canvas)
+        if (mIsAnimationStart) drawCircleWithAnimation(canvas)
+        else drawCircle(canvas)
 
     }
 
-    private fun drawCircleWithAnimation(canvas: Canvas?) {
 
+    override fun onAnimationUpdate(animator: ValueAnimator?) {
+
+        mAnimatedValue = animator?.animatedValue as Int
+        invalidate()
+    }
+
+
+    fun startAnimation() {
+        mValueAnimator.duration = 500
+        mValueAnimator.interpolator = AccelerateDecelerateInterpolator()
+        mValueAnimator.addUpdateListener(this)
+        mIsAnimationStart = true
+        mValueAnimator.start()
+    }
+
+
+    private fun drawCircleWithAnimation(canvas: Canvas?) {
         (1..17).forEach { i ->
-            val y = (listYPos[i + 1] - listYPos[i - 1]) * animatedValue / 100 + listYPos[i - 1]
+            val y = (mListYPos[i + 1] - mListYPos[i - 1]) * mAnimatedValue / 100 + mListYPos[i - 1]
             Log.d("Tasbih", "drawCircle: $y")
             if (i % 2 == 0) {
                 val size =
-                    (listSizes[i + 1] - listSizes[i - 1]) * animatedValue / 100 + listSizes[i - 1]
+                    (mListSizes[i + 1] - mListSizes[i - 1]) * mAnimatedValue / 100 + mListSizes[i - 1]
                 when (i) {
                     16 -> {
-                        paint.alpha = 255 - 255 * animatedValue / 100
+                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
                     }
                     2 -> {
-                        paint.alpha = 255 * animatedValue / 100
+                        sPaint.alpha = 255 * mAnimatedValue / 100
                     }
-                    else -> paint.alpha = 255
+                    else -> sPaint.alpha = 255
                 }
 
                 getBitmap(size)?.let {
@@ -136,102 +129,53 @@ class Tasbih @JvmOverloads constructor(
                         it,
                         measuredWidth / 2 - it.width / 2f,
                         y,
-                        paint
+                        sPaint
                     )
                 }
 
             } else {
                 if (i == 17)
-                    paint.alpha = 255 - 255 * animatedValue / 100
+                    sPaint.alpha = 255 - 255 * mAnimatedValue / 100
                 else
-                    paint.alpha = 255
-                getBitmap(listSizes[i - 1])?.let {
+                    sPaint.alpha = 255
+                getBitmap(mListSizes[i - 1])?.let {
                     canvas?.drawBitmap(
                         it,
                         measuredWidth / 2 - it.width / 2f,
                         y,
-                        paint
+                        sPaint
                     )
                 }
             }
         }
-        if (animatedValue == 100) {
-            isAnimationStart = false
+        if (mAnimatedValue == 100) {
+            mIsAnimationStart = false
         }
     }
 
+
     private fun drawCircle(canvas: Canvas?) {
         (1..17).forEach { i ->
-            getBitmap(listSizes[i - 1])?.let {
+            getBitmap(mListSizes[i - 1])?.let {
                 canvas?.drawBitmap(
                     it,
                     measuredWidth / 2 - it.width / 2f,
-                    listYPos[i - 1],
-                    paint
+                    mListYPos[i - 1],
+                    sPaint
                 )
             }
         }
 
     }
 
+
     private fun getBitmap(size: Int): Bitmap? {
-        return if (bitmap != null) {
-            Bitmap.createScaledBitmap(bitmap!!, size, size, true)
+        return if (mBitmap != null) {
+            Bitmap.createScaledBitmap(mBitmap!!, size, size, true)
         } else {
             null
         }
     }
 
-    override fun onAnimationUpdate(animator: ValueAnimator?) {
-
-        animatedValue = animator?.animatedValue as Int
-        invalidate()
-    }
-
-//    override fun onTouchEvent(event: MotionEvent?): Boolean {
-//        val pointerIndex = event?.actionIndex
-//        when (event?.actionMasked) {
-//            MotionEvent.ACTION_DOWN,
-//                MotionEvent.ACTION_POINTER_DOWN-> return true
-//            MotionEvent.ACTION_UP,
-//                MotionEvent.ACTION_POINTER_UP-> return true
-//        }
-//    }
-
-
-//    fun a(z: Boolean, z2: Boolean) {
-//        var h :Float
-//        val f2 = if (z2) 0.0f else if (z) i else -i
-//        val abs = Math.abs((f2 - h) * 250.0f / i) as Int
-//        if (valueAnimator != null && valueAnimator.isRunning()) {
-//            valueAnimator.end()
-//        }
-//        valueAnimator = ValueAnimator.ofFloat(bitmap1, bitmap2)
-//        valueAnimator.setInterpolator(DecelerateInterpolator())
-//        valueAnimator.setDuration(abs)
-//        valueAnimator.addUpdateListener { valueAnimator ->
-//            h = valueAnimator.getAnimatedValue() as Float
-//            invalidate()
-//        }
-//        valueAnimator.addListener(object : AnimatorListener {
-//            override fun onAnimationRepeat(animator: Animator) {}
-//            override fun onAnimationStart(animator: Animator) {
-//                if (!z2) {
-//                    listener.onBead(z)
-//                }
-//            }
-//
-//            override fun onAnimationEnd(animator: Animator) {
-//                h = 0.0f
-//                invalidate()
-//            }
-//
-//            override fun onAnimationCancel(animator: Animator) {
-//                h = 0.0f
-//                invalidate()
-//            }
-//        })
-//        this.valueAnimator.start()
-//    }
 
 }

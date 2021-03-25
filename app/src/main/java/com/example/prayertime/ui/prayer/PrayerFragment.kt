@@ -10,20 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.prayertime.R
-import com.example.prayertime.databinding.PrayerFragmentBinding
+import com.example.prayertime.databinding.FragmentPrayerBinding
 import com.example.prayertime.ui.home.AdapterHome
 import com.example.prayertime.ui.home.Model
 
 class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
 
-    private lateinit var binding: PrayerFragmentBinding
+    private lateinit var binding: FragmentPrayerBinding
     private lateinit var viewModel: PrayerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.prayer_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_prayer, container, false)
         setRv()
         return binding.root
     }

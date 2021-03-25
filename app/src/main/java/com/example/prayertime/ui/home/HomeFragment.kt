@@ -72,7 +72,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
             Model(
                 3,
                 "Qibla",
-                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_qibla) }!!
+                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_compass_ui) }!!
             ),
             Model(
                 4,

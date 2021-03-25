@@ -2,12 +2,10 @@ package com.example.prayertime.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prayertime.R
-import com.example.prayertime.databinding.RvItemBinding
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import com.example.prayertime.databinding.ItemRvBinding
 
 class AdapterHome(private val listener:RvItemListener):RecyclerView.Adapter<AdapterHome.VH>() {
 
@@ -24,12 +22,12 @@ private var list= listOf<Model>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterHome.VH {
         val inflater = LayoutInflater.from(parent.context)
-        val binding:RvItemBinding = DataBindingUtil.inflate(inflater, R.layout.rv_item,parent,false)
+        val binding:ItemRvBinding = DataBindingUtil.inflate(inflater, R.layout.item_rv,parent,false)
         return VH(binding)
 
     }
 
-    override fun onBindViewHolder(holder: AdapterHome.VH, position: Int) {
+    override fun onBindViewHolder(holder: VH, position: Int) {
         holder.itemView.setOnClickListener {
             listener.onClicked(list[position])
         }
@@ -39,7 +37,7 @@ private var list= listOf<Model>()
     override fun getItemCount(): Int = list.size
 
 
-    class VH(private val binding:RvItemBinding) :RecyclerView.ViewHolder(binding.root){
+    class VH(private val binding:ItemRvBinding) :RecyclerView.ViewHolder(binding.root){
         fun onBind(model:Model){
             with(binding) {
                 this.tvItem.text =model.text

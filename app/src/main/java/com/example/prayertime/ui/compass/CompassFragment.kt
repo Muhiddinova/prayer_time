@@ -24,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -32,7 +31,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.prayertime.R
-import com.example.prayertime.databinding.CompassNewBinding
+import com.example.prayertime.databinding.FragmentCompassBinding
 import com.example.prayertime.ui.prayerTime.LAST_LOCATION_UPDATE
 import com.example.prayertime.ui.prayerTime.LATITUDE
 import com.example.prayertime.ui.prayerTime.LONGITUDE
@@ -59,7 +58,7 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
     private var longitude: String? = null
     private lateinit var prefs: SharedPreferences
     private lateinit var sensorManager: SensorManager
-    private lateinit var binding: CompassNewBinding
+    private lateinit var binding: FragmentCompassBinding
     private lateinit var viewModel: CompassViewModel
     private lateinit var locationManager: LocationManager
     private lateinit var gmt: TimeZone
@@ -76,10 +75,10 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         Log.d("CompassFragment:", "Compass Fragment: degree: $degree")
         viewModel = ViewModelProvider(this).get(CompassViewModel::class.java)
-        binding = DataBindingUtil.inflate(inflater, R.layout.compass_new, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_compass, container, false)
         binding.imgCompass.startAnimation()
         sensorManager =
             (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager?)!!
@@ -145,7 +144,6 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                     mGeomagnetic[1] = alpha * mGeomagnetic[1] + (1 - alpha) * sensorEvent.values[1]
                     mGeomagnetic[2] = alpha * mGeomagnetic[2] + (1 - alpha) * sensorEvent.values[2]
                 }
-
                 val R = FloatArray(9)
                 val I = FloatArray(9)
                 val success: Boolean = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic)
@@ -165,9 +163,6 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                     anim.duration = 100
                     anim.repeatCount = 0
                     anim.fillAfter = true
-
-//                    binding.tvPosition.text = ("Your current position: $degree")
-//                    binding.tvPosition.width
                     binding.imgCompass.startAnimation(anim)
                 }
             }
@@ -203,13 +198,6 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return
         }
         mFusedLoactionProvider.locationAvailability
@@ -265,7 +253,7 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
             .putString(LATITUDE, latitude)
             .putString(LONGITUDE, longitude)
             .putLong(LAST_LOCATION_UPDATE, System.currentTimeMillis())
-            .apply()
+
     }
 
     private fun getSavedLocation() {

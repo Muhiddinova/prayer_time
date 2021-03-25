@@ -1,19 +1,20 @@
 package com.example.prayertime.ui.audio
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentYouTubeBinding
-import com.example.prayertime.databinding.YouTubeItemBinding
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+import com.example.prayertime.databinding.ItemYouTubeBinding
+import com.example.prayertime.model.YouTubeModel
+import com.google.android.youtube.player.YouTubeInitializationResult
+import com.google.android.youtube.player.YouTubePlayer
 
 
 class YouTubeFragment : Fragment() {
@@ -31,7 +32,7 @@ class YouTubeFragment : Fragment() {
 
     private fun setRv() {
         val list = getList()
-        val adapter = AdapterYouTube()
+        val adapter = AdapterYouTube(requireContext())
         adapter.setData(list)
         binding.rvYouTube.adapter = adapter
     }
@@ -46,23 +47,19 @@ class YouTubeFragment : Fragment() {
             YouTubeModel(6, "Qx8pmRHDvo8"),
             YouTubeModel(7, "Qx8pmRHDvo8"),
 
-        )
+            )
     }
-
-
 
 
 }
 
 
-class AdapterYouTube() :
+class AdapterYouTube(context: Context) :
     RecyclerView.Adapter<AdapterYouTube.VH>() {
 
 
-    interface YouTubeItemListener {
+    private val inflater = LayoutInflater.from(context)
 
-        fun onClicked(model: YouTubeModel)
-    }
 
     private var list = listOf<YouTubeModel>()
     fun setData(list: List<YouTubeModel>) {
@@ -71,18 +68,17 @@ class AdapterYouTube() :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterYouTube.VH {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding: YouTubeItemBinding = DataBindingUtil.inflate(
+        val binding: ItemYouTubeBinding = DataBindingUtil.inflate(
             inflater,
-            R.layout.you_tube_item,
+            R.layout.item_you_tube,
             parent,
             false
         )
-        return VH(binding)
+        return VH(binding, parent.context)
 
     }
 
-    override fun onBindViewHolder(holder: AdapterYouTube.VH, position: Int) {
+    override fun onBindViewHolder(holder: VH, position: Int) {
 //        holder.itemView.setOnClickListener {
 //            listener.onClicked(list[position])
 //        }
@@ -90,13 +86,33 @@ class AdapterYouTube() :
     }
 
     override fun getItemCount(): Int = list.size
-    class VH(private val binding: YouTubeItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class VH(private val binding: ItemYouTubeBinding, private val context: Context) :
+        RecyclerView.ViewHolder(binding.root) {
         fun onBind(model: YouTubeModel) {
-            binding.video.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                override fun onReady(youTubePlayer: YouTubePlayer) {
-                    youTubePlayer.loadVideo(model.videoId, 0f)
-                }
-            })
+            binding.player.initialize(context.getString(R.string.google_maps_key),
+                object : YouTubePlayer.OnInitializedListener {
+                    override fun onInitializationSuccess(
+                        provider: YouTubePlayer.Provider?,
+                        player: YouTubePlayer?,
+                        wasRestored: Boolean
+                    ) {
+                        player?.loadPlaylist(model.videoId)
+                        player?.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT)
+                    }
+
+                    override fun onInitializationFailure(
+                        p0: YouTubePlayer.Provider?,
+                        p1: YouTubeInitializationResult?
+                    ) {
+                        Toast.makeText(context, "initializing failure", Toast.LENGTH_SHORT).show()
+                    }
+
+                })
+//            binding.video.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+//                override fun onReady(youTubePlayer: YouTubePlayer) {
+//                    youTubePlayer.loadVideo(model.videoId, 0f)
+//                }
+//            })
         }
     }
 

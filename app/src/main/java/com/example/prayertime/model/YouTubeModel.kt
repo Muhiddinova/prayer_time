@@ -1,4 +1,4 @@
-package com.example.prayertime.ui.audio
+package com.example.prayertime.model
 
 class YouTubeModel (
     val id:Int,
