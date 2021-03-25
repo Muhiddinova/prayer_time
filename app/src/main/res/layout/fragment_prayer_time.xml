@@ -9,8 +9,8 @@
     tools:context=".ui.prayerTime.PrayerTimeFragment">
 
     <ImageView
-        android:layout_marginTop="50dp"
         android:id="@+id/prayer_img"
+        android:layout_marginTop="50dp"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:src="@drawable/ic_sun"
@@ -81,7 +81,7 @@
                 android:src="@drawable/ic_sunrise" />
 
             <TextView
-                android:id="@+id/name_bomdod"
+                android:id="@+id/name_fajr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -90,7 +90,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/time_bomdod"
+                android:id="@+id/time_fajr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -117,7 +117,7 @@
                 android:src="@drawable/ic_sun" />
 
             <TextView
-                android:id="@+id/name_quyosh"
+                android:id="@+id/name_shuruq"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -126,7 +126,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/time_quyosh"
+                android:id="@+id/time_shuruq"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -153,7 +153,7 @@
 
 
             <TextView
-                android:id="@+id/name_peshin"
+                android:id="@+id/name_thuhr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -162,7 +162,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/time_peshin"
+                android:id="@+id/time_thuhr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -188,7 +188,7 @@
                 android:src="@drawable/ic_eclipse" />
 
             <TextView
-                android:id="@+id/name_asr"
+                android:id="@+id/name_assr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -197,7 +197,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/time_asr"
+                android:id="@+id/time_assr"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -212,7 +212,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_margin="8dp"
             android:orientation="horizontal"
             android:weightSum="4">
@@ -224,7 +223,7 @@
                 android:src="@drawable/ic_sunrise_shom" />
 
             <TextView
-                android:id="@+id/name_shom"
+                android:id="@+id/name_maghrib"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -233,7 +232,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/time_shom"
+                android:id="@+id/time_maghrib"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -259,7 +258,7 @@
                 android:src="@drawable/ic_moon" />
 
             <TextView
-                android:id="@+id/name_xufton"
+                android:id="@+id/name_ishaa"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -268,7 +267,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/time_xufton"
+                android:id="@+id/time_ishaa"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

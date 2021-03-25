@@ -64,17 +64,35 @@ dependencies {
     implementation 'com.github.ahmedeltaher:Azan:3.0'
     implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:10.0.5'
 
-
+    //gps
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
+    //maps lib
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.github.jd-alexander:library:1.1.0'
+    //room
+
+    def room_version = "2.2.6"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+    // optional - Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
+
+    //coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 //maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
     implementation 'com.github.jd-alexander:library:1.1.0'
 
-
-
+    //RxJava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'

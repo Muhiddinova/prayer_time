@@ -2,37 +2,70 @@ package com.example.prayertime.ui.home
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.azan.astrologicalCalc.Location
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentHomeBinding
+import com.example.prayertime.helper.LocationHelper
+import com.example.prayertime.helper.TimeHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
+import java.util.*
 
 
 class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
     private lateinit var binding: FragmentHomeBinding
     var broadcastReceiver: BroadcastReceiver? = null
+    var TAG = "HomeFragment"
     @SuppressLint("SimpleDateFormat")
     var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
     var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.YYYY")
+    private lateinit var locationHelper: LocationHelper
+    lateinit var mChronometer: Chronometer
+    private lateinit var astroLocation: Location
+    private lateinit var gmt: TimeZone
+    private lateinit var timeHelper: TimeHelper
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        locationHelper = LocationHelper.getInstance(requireActivity())
+        gmt = TimeZone.getDefault()
 
-        val mChronometer : Chronometer = binding.chronometer
+//        locationHelper.getLocationLiveData().observe(requireActivity()) {
+//            Log.d(TAG, "onCreate: ${it.longitude}")
+//            astroLocation = Location(it.latitude, it.longitude, gmt.rawOffset.toDouble(), 0)
+//            timeHelper = TimeHelper(astroLocation, dataSource)
+//            runBlocking {
+//                withContext(Dispatchers.IO) {
+//                    timeHelper.prayerTime()
+//                }
+//            }
+//        }
+
+
+
+        mChronometer = binding.chronometer
 //        mChronometer.format = "HH:MM"
         mChronometer.base = SystemClock.elapsedRealtime()
         mChronometer.start()
@@ -51,10 +84,24 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         val curentTime = System.currentTimeMillis()
         binding.chronometer.text = timeFormat.format(curentTime)
         binding.date.text = dateFormat.format(curentTime)
-
-
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                locationHelper.alertDialogGpsCheck()
+                locationHelper.getLocation()
+            }else{
+                locationHelper.showDialogForPermission()
+            }
+        }
+
+    }
 
     private fun getList(): List<Model> {
         return listOf(
@@ -108,7 +155,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     }
 
     override fun onClicked(model: Model) {
-        when(model.id){
+        when (model.id) {
             1 -> findNavController().navigate(
                 R.id.tasbeehFragment
             )

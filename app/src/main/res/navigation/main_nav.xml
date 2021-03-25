@@ -18,7 +18,7 @@
         android:label="TasbeehFragment" />
     <activity
         android:id="@+id/mainActivity"
-        android:name="com.example.prayertime.MainActivity"
+        android:name="com.example.prayertime.mainActivity.MainActivity"
         android:label="activity_main"
         tools:layout="@layout/activity_main" />
 
