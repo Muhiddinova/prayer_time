@@ -6,24 +6,45 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/gr3"
+        android:background="@drawable/ic__3"
         tools:context=".ui.home.HomeFragment">
+
+
+
+        <ImageView
+            android:id="@+id/setting"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:elevation="4dp"
+            android:layout_marginTop="16sp"
+            android:layout_marginEnd="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_settings_5_line"/>
+
 
         <LinearLayout
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
+            <Chronometer
+                android:id="@+id/chronometer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="16:00"
-                android:textSize="50sp" />
+                android:textSize="30sp" />
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23.02.2021"
+                android:textSize="20sp"
+                />
         </LinearLayout>
 
 
@@ -32,16 +53,16 @@
                 android:id="@+id/rvMain"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@+id/linear"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginBottom="4dp"
-                android:background="#31000000"
+                android:background="@drawable/rv_bg"
+                style="@style/recyclerView"
                 android:elevation="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear"
                 android:orientation="horizontal"
                 />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gr3"
+        tools:context=".ui.calendar.CalendarFragment">
+
+        <TextView
+            android:layout_marginTop="50dp"
+            android:id="@+id/calendarText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/gregorian"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@+id/linearCalendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/linearCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="320dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnCalendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/calendarText">
+
+            <CalendarView
+                android:id="@+id/calendarGregorian"
+                android:layout_width="wrap_content"
+                android:layout_height="320dp"
+                android:scrollbarFadeDuration="3000"
+                app:layout_constraintTop_toBottomOf="@+id/calendarText" />
+
+            <com.github.eltohamy.materialhijricalendarview.MaterialHijriCalendarView
+                android:id="@+id/calendarHijri"
+                android:layout_width="wrap_content"
+                android:layout_height="320dp"
+                android:visibility="gone" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCalendar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hijri"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearCalendar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

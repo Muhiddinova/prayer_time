@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bn_nav"
+    app:startDestination="@id/audioFragment2">
+
+    <fragment
+        android:id="@+id/audioFragment2"
+        android:name="com.example.prayertime.ui.audio.AudioFragment"
+        android:label="AudioFragment"
+        tools:layout="@layout/fragment_audio"/>
+    <fragment
+        android:id="@+id/youTubeFragment2"
+        android:name="com.example.prayertime.ui.audio.YouTubeFragment"
+        android:label="YouTubeFragment"
+        tools:layout="@layout/fragment_you_tube"/>
+    <fragment
+        android:id="@+id/radioFragment"
+        android:name="com.example.prayertime.ui.audio.RadioFragment"
+        android:label="RadioFragment"
+        tools:layout="@layout/fragment_radio"/>
+</navigation>

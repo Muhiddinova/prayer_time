@@ -13,7 +13,7 @@
         android:padding="12dp"
         android:id="@+id/cv_card"
         android:layout_width="80sp"
-        android:layout_height="130sp"
+        android:layout_height="110sp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
@@ -28,19 +28,20 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_main"
             android:layout_width="match_parent"
-            android:layout_height="60sp"
+            android:layout_height="50sp"
             app:shapeAppearance="?attr/shapeAppearanceMediumComponent" />
 
 
         <TextView
+
             android:id="@+id/tv_item"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_marginTop="12dp"
             android:layout_marginBottom="4dp"
-            android:gravity="bottom"
-            android:textSize="14sp"
+            android:gravity="center"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
     </LinearLayout>

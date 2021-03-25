@@ -25,4 +25,10 @@
         <item name="android:textStyle">bold</item>
         <item name="autoSizeTextType">uniform</item>
     </style>
+    <style name="recyclerView">
+        <item name="boxCornerRadiusTopEnd">30dp</item>
+<!--        <item name="shapeAppearance">40dp</item>-->
+        <item name="cornerFamily">cut</item>
+
+    </style>
 </resources>
