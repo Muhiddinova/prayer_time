@@ -6,21 +6,23 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Build
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.prayertime.R
 
 
+@RequiresApi(Build.VERSION_CODES.HONEYCOMB)
 class Tasbih @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
-) :
-    View(context, attrs, defStyle), ValueAnimator.AnimatorUpdateListener {
+) : View(context, attrs, defStyle), ValueAnimator.AnimatorUpdateListener {
 
     private var mValueAnimator = ValueAnimator.ofInt(1, 100)
     private val sPaint = Paint()

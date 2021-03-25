@@ -20,7 +20,7 @@ private var list= listOf<Model>()
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterHome.VH {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val inflater = LayoutInflater.from(parent.context)
         val binding:ItemRvBinding = DataBindingUtil.inflate(inflater, R.layout.item_rv,parent,false)
         return VH(binding)

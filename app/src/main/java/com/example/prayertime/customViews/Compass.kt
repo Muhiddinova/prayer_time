@@ -5,13 +5,16 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import com.example.prayertime.R
 
+@RequiresApi(Build.VERSION_CODES.HONEYCOMB)
 class Compass @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
