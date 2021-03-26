@@ -22,7 +22,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.*
 
-class MainActivity() : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
     private val TAG = "MainActivity Main"
     private lateinit var viewModel: MainActivityViewModel

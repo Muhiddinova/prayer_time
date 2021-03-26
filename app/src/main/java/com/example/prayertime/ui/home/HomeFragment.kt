@@ -6,12 +6,12 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Chronometer
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -22,9 +22,7 @@ import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentHomeBinding
 import com.example.prayertime.helper.LocationHelper
 import com.example.prayertime.helper.TimeHelper
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
+import com.example.prayertime.notification.Notification
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,6 +32,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     private lateinit var binding: FragmentHomeBinding
     var broadcastReceiver: BroadcastReceiver? = null
     var TAG = "HomeFragment"
+
     @SuppressLint("SimpleDateFormat")
     var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
     var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.YYYY")
@@ -52,18 +51,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         locationHelper = LocationHelper.getInstance(requireActivity())
         gmt = TimeZone.getDefault()
 
-//        locationHelper.getLocationLiveData().observe(requireActivity()) {
-//            Log.d(TAG, "onCreate: ${it.longitude}")
-//            astroLocation = Location(it.latitude, it.longitude, gmt.rawOffset.toDouble(), 0)
-//            timeHelper = TimeHelper(astroLocation, dataSource)
-//            runBlocking {
-//                withContext(Dispatchers.IO) {
-//                    timeHelper.prayerTime()
-//                }
-//            }
-//        }
-
-
+        makeNotification()
 
         mChronometer = binding.chronometer
 //        mChronometer.format = "HH:MM"
@@ -78,6 +66,18 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         }
         setRv()
         return binding.root
+    }
+
+    private fun makeNotification() {
+        val notification = Notification(requireContext())
+
+        notification.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+            getString(R.string.app_name), "App notification channel."
+        )
+
+        notification.makeNotification()
     }
 
     private fun setTime() {
@@ -96,7 +96,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationHelper.alertDialogGpsCheck()
                 locationHelper.getLocation()
-            }else{
+            } else {
                 locationHelper.showDialogForPermission()
             }
         }

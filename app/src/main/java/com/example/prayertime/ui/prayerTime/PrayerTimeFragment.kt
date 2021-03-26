@@ -27,17 +27,12 @@ import com.azan.Azan
 import com.azan.Madhhab
 import com.azan.Method
 import com.azan.astrologicalCalc.Location
-import com.azan.astrologicalCalc.SimpleDate
 import com.example.prayertime.R
 import com.example.prayertime.database.RoomDatabase
-import com.example.prayertime.databinding.PrayerTimeFragmentBinding
-import com.example.prayertime.mainActivity.MainActivityViewModel
-import com.example.prayertime.mainActivity.MainActivityViewModelFactory
+import com.example.prayertime.databinding.FragmentPrayerTimeBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import java.text.DateFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 const val LATITUDE = "latitude"
@@ -49,7 +44,7 @@ const val LOCATION_REQ_CODE = 1001
 class PrayerTimeFragment : Fragment() {
     private val TAG = "PrayerTimeFragment"
 
-    private lateinit var binding: PrayerTimeFragmentBinding
+    private lateinit var binding: FragmentPrayerTimeBinding
     private var locationManager: LocationManager? = null
     private var latitude: String? = null
     private var longitude: String? = null
@@ -68,7 +63,7 @@ class PrayerTimeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater, R.layout.prayer_time_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_prayer_time, container, false)
         val dataSource = RoomDatabase.getDatabase(requireContext()).timesByYearDao
         val factory = PrayerTimeVIewModelFactory(dataSource)
         viewModel = ViewModelProviders.of(requireActivity(), factory).get(PrayerTimeViewModel::class.java)
@@ -100,15 +95,6 @@ class PrayerTimeFragment : Fragment() {
             }
         }
 
-
-
-//        hasLocationPermission = ContextCompat.checkSelfPermission(
-//            requireContext(),
-//            Manifest.permission.ACCESS_FINE_LOCATION
-//        ) == PackageManager.PERMISSION_GRANTED
-//        gmt = TimeZone.getDefault()
-//        checkLocation()
-//        getSavedLocation()
         return binding.root
     }
 

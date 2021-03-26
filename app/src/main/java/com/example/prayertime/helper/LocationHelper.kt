@@ -13,9 +13,11 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -156,6 +158,7 @@ class LocationHelper(val activity: Activity) {
                 Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
                 location = locationResult
                 locationObservable.value = locationResult
+                Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
                 savePrefs()
             }
         }
