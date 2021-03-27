@@ -22,4 +22,8 @@ class TimesRepository(private val dataSource: TimesByYearDao) {
     fun getFirstElement(): Times{
         return dataSource.getFirstElement()
     }
+
+    fun getSecondElement(): Times{
+        return  dataSource.getSecondElement()
+    }
 }

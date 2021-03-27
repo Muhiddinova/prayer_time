@@ -39,8 +39,6 @@ class TasbeehFragment : Fragment() {
             binding.countTasbih.text = "0"
         }
 
-
-
         return binding.root
     }
 
