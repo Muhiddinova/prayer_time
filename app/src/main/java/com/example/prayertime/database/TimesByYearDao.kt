@@ -23,6 +23,7 @@ interface TimesByYearDao{
     @Query("Select * from times where timesId = 0")
     fun getFirstElement(): Times
 
-
-
+    @Query("Select * from times where timesId = 1")
+    fun getSecondElement(): Times
+    
 }

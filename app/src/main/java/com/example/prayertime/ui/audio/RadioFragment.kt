@@ -2,7 +2,6 @@ package com.example.prayertime.ui.audio
 
 import android.media.MediaPlayer
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentRadioBinding
 import com.example.prayertime.databinding.ItemRvBinding
-import com.example.prayertime.ui.home.Model
-import java.io.IOException
+import com.example.prayertime.model.HomeItem
 
 
 class RadioFragment : Fragment() {
@@ -108,18 +106,18 @@ class RadioFragment : Fragment() {
 //    }
 
 
-    private fun getList():List<Model>{
+    private fun getList():List<HomeItem>{
         return listOf(
-            Model(1,"Azon FM",requireContext().let { ContextCompat.getDrawable(it,R.drawable.azon_fm)!! }),
-            Model(2,"Navro'z FM",requireContext().let { ContextCompat.getDrawable(it,R.drawable.navroz_fm)!! }),
+            HomeItem(1,"Azon FM",requireContext().let { ContextCompat.getDrawable(it,R.drawable.azon_fm)!! }),
+            HomeItem(2,"Navro'z FM",requireContext().let { ContextCompat.getDrawable(it,R.drawable.navroz_fm)!! }),
         )
     }
 }
 
 class AdapterRadioFragment() : RecyclerView.Adapter<AdapterRadioFragment.VH>() {
 
-private var list= listOf<Model>()
-    fun setData(list: List<Model>){
+private var list= listOf<HomeItem>()
+    fun setData(list: List<HomeItem>){
         this.list=list
         notifyDataSetChanged()
     }
@@ -139,9 +137,9 @@ private var list= listOf<Model>()
     override fun getItemCount(): Int =list.size
 
     class VH (private val binding: ItemRvBinding):RecyclerView.ViewHolder(binding.root){
-        fun onBind(model: Model) {
-            binding.tvItem.text=model.text
-            binding.ivMain.setImageDrawable(model.image)
+        fun onBind(HomeItem: HomeItem) {
+            binding.tvItem.text=HomeItem.text
+            binding.ivMain.setImageDrawable(HomeItem.image)
 
         }
 

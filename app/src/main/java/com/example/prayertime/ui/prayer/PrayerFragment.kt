@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentPrayerBinding
 import com.example.prayertime.ui.home.AdapterHome
-import com.example.prayertime.ui.home.Model
+import com.example.prayertime.model.HomeItem
 
 class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
 
@@ -36,61 +36,61 @@ class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
         binding.rvPrayer.adapter=adapter
     }
 
-    private fun getList(): List<Model> {
+    private fun getList(): List<HomeItem> {
         return listOf(
-            Model(
+            HomeItem(
                 1,
                 "Hammasi",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!
             ),
-            Model(1,
+            HomeItem(1,
                 "Tonggi va kechki ",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Namozdagi duo...",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Uy va oilada",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Qiyinchilik kel...",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Kasal bo'lganda",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Tabiat",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Xaj va Umra",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Sayohat",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Sahobalarning duo...",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
                 }!!),
-            Model(1,
+            HomeItem(1,
                 "Boshqalar",
                 requireContext().let {
                     ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
@@ -106,7 +106,7 @@ class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
         // TODO: Use the ViewModel
     }
 
-    override fun onClicked(model: Model) {
+    override fun onClicked(HomeItem: HomeItem) {
         TODO("Not yet implemented")
     }
 

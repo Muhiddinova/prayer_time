@@ -1,4 +1,4 @@
-package com.example.prayertime.notification
+package com.example.prayertime.helper
 
 import android.R.attr.delay
 import android.app.AlarmManager
@@ -53,7 +53,7 @@ class Notification(private val context: Context) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelId = context.packageName
+            val channelId = "${context.packageName}-$name"
             val channel = NotificationChannel(channelId, name, importance)
             channel.description = description
             channel.setShowBadge(showBadge)

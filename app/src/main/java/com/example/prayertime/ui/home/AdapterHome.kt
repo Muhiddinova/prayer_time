@@ -6,16 +6,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.prayertime.R
 import com.example.prayertime.databinding.ItemRvBinding
+import com.example.prayertime.model.HomeItem
 
 class AdapterHome(private val listener:RvItemListener):RecyclerView.Adapter<AdapterHome.VH>() {
 
 
     interface RvItemListener{
-        fun onClicked(model: Model)
+        fun onClicked(HomeItem: HomeItem)
     }
 
-private var list= listOf<Model>()
-    fun setData(list: List<Model>) {
+private var list= listOf<HomeItem>()
+    fun setData(list: List<HomeItem>) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -38,10 +39,10 @@ private var list= listOf<Model>()
 
 
     class VH(private val binding:ItemRvBinding) :RecyclerView.ViewHolder(binding.root){
-        fun onBind(model:Model){
+        fun onBind(HomeItem: HomeItem){
             with(binding) {
-                this.tvItem.text =model.text
-                this.ivMain.setImageDrawable(model.image)
+                this.tvItem.text =HomeItem.text
+                this.ivMain.setImageDrawable(HomeItem.image)
 
             }
         }

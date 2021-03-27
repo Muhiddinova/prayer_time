@@ -15,29 +15,38 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.azan.astrologicalCalc.Location
 import com.example.prayertime.R
+import com.example.prayertime.database.RoomDatabase
 import com.example.prayertime.databinding.FragmentHomeBinding
 import com.example.prayertime.helper.LocationHelper
 import com.example.prayertime.helper.TimeHelper
-import com.example.prayertime.notification.Notification
+import com.example.prayertime.model.HomeItem
+import com.example.prayertime.helper.Notification
+import com.example.prayertime.model.Times
+import com.example.prayertime.ui.prayerTime.PrayerTimeVIewModelFactory
+import com.example.prayertime.ui.prayerTime.PrayerTimeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.Calendar.*
 
 
 class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
-    private lateinit var binding: FragmentHomeBinding
-    var broadcastReceiver: BroadcastReceiver? = null
-    var TAG = "HomeFragment"
 
     @SuppressLint("SimpleDateFormat")
-    var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
-    var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.YYYY")
+    private var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
+    private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.YYYY")
+    private var calendar = Calendar.getInstance(Locale.getDefault())
+    private var broadcastReceiver: BroadcastReceiver? = null
+    private var TAG = "HomeFragment"
+    private lateinit var binding: FragmentHomeBinding
+    private lateinit var mChronometer: Chronometer
     private lateinit var locationHelper: LocationHelper
-    lateinit var mChronometer: Chronometer
+    private lateinit var viewModel: HomeFragmentViewModel
     private lateinit var astroLocation: Location
     private lateinit var gmt: TimeZone
     private lateinit var timeHelper: TimeHelper
@@ -48,6 +57,10 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        val dataSource = RoomDatabase.getDatabase(requireContext()).timesByYearDao
+        val factory = HomeFragmentViewModelFactory(dataSource)
+        viewModel =
+            ViewModelProviders.of(requireActivity(), factory).get(HomeFragmentViewModel::class.java)
         locationHelper = LocationHelper.getInstance(requireActivity())
         gmt = TimeZone.getDefault()
 
@@ -74,10 +87,60 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         notification.createNotificationChannel(
             requireContext(),
             NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            getString(R.string.app_name), "App notification channel."
+            "fajr", "App notification channel."
+        )
+
+        notification.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+            "shuruq", "App notification channel."
+        )
+
+        notification.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+            "thuhr", "App notification channel."
+        )
+
+        notification.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+            "assr", "App notification channel."
+        )
+
+        notification.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+            "maghrib", "App notification channel."
+        )
+
+        notification.createNotificationChannel(
+            requireContext(),
+            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
+            "ishaa", "App notification channel."
         )
 
         notification.makeNotification()
+    }
+
+    private fun getdate() {
+
+        viewModel.getFirstElement()
+    }
+
+    private fun setCalendarTime(time: Times){
+        val fajr = time.fajr.split(":")
+        val shuruq= time.shuruq.split(":")
+        val thuhr= time.thuhr.split(":")
+        val assr= time.assr.split(":")
+        val maghrib= time.maghrib.split(":")
+        val ishaa= time.ishaa.split(":")
+
+        calendar.timeInMillis = System.currentTimeMillis()
+        calendar.set(HOUR_OF_DAY, fajr[0].toInt())
+        calendar.set(MINUTE, fajr[1].toInt())
+        calendar.set(SECOND, 0)
+        calendar.set(MILLISECOND, 0)
     }
 
     private fun setTime() {
@@ -103,25 +166,25 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
     }
 
-    private fun getList(): List<Model> {
+    private fun getList(): List<HomeItem> {
         return listOf(
 
-            Model(
+            HomeItem(
                 1,
                 "Tasbeh",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads) }!!
             ),
-            Model(
+            HomeItem(
                 2,
                 "Duo",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_dua_hands) }!!
             ),
-            Model(
+            HomeItem(
                 3,
                 "Qibla",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_compass_ui) }!!
             ),
-            Model(
+            HomeItem(
                 4,
                 "Masjid",
                 requireContext().let {
@@ -131,12 +194,12 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
                     )
                 }!!
             ),
-            Model(
+            HomeItem(
                 5,
                 "Ma'ruza",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_cassette) }!!
             ),
-            Model(
+            HomeItem(
                 6,
                 "Kalendar",
                 requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_calendar) }!!
@@ -154,8 +217,8 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         binding.rvMain.adapter = adapter
     }
 
-    override fun onClicked(model: Model) {
-        when (model.id) {
+    override fun onClicked(HomeItem: HomeItem) {
+        when (HomeItem.id) {
             1 -> findNavController().navigate(
                 R.id.tasbeehFragment
             )
