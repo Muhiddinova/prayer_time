@@ -39,7 +39,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
     @SuppressLint("SimpleDateFormat")
     private var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
-    private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.YYYY")
+    private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy",Locale.getDefault())
     private var calendar = Calendar.getInstance(Locale.getDefault())
     private var broadcastReceiver: BroadcastReceiver? = null
     private var TAG = "HomeFragment"
@@ -149,22 +149,22 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         binding.date.text = dateFormat.format(curentTime)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationHelper.alertDialogGpsCheck()
-                locationHelper.getLocation()
-            } else {
-                locationHelper.showDialogForPermission()
-            }
-        }
-
-    }
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        if (requestCode == 1) {
+//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                locationHelper.checkLocationPermission()
+//                locationHelper.getLocation()
+//            } else {
+//                locationHelper.showDialogForPermission()
+//            }
+//        }
+//
+//    }
 
     private fun getList(): List<HomeItem> {
         return listOf(

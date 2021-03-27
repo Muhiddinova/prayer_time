@@ -1,6 +1,5 @@
-package com.example.prayertime.mainActivity
+package com.example.prayertime.ui.mainActivity
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.prayertime.database.TimesByYearDao

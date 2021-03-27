@@ -24,7 +24,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.prayertime.ui.prayerTime.*
 
 
-class LocationHelper(val activity: Activity) {
+class LocationHelper(private val activity: Activity) {
 
     private val TAG = "LocationHelper"
     private val LOCATION_PERMISSION_CODE = 1001
@@ -34,9 +34,10 @@ class LocationHelper(val activity: Activity) {
     private val locationObservable = MutableLiveData<Location>()
     private lateinit var prefs: SharedPreferences
     private lateinit var locationManager: LocationManager
+    lateinit var dialog: AlertDialog
+    private val permission = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
 
     companion object {
-
         private var INSTANCE: LocationHelper? = null
         fun getInstance(activity: Activity): LocationHelper {
             if (INSTANCE != null) {
@@ -53,32 +54,70 @@ class LocationHelper(val activity: Activity) {
         return locationObservable
     }
 
-
     fun initialize() {
         prefs = activity.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
         locationManager = (activity.getSystemService(LOCATION_SERVICE) as LocationManager?)!!
         getSavedLocation()
+        checkLocationPermission()
+    }
+
+    fun checkLocationPermission() {
         hasLocationPermission = ActivityCompat.checkSelfPermission(
             activity,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
-
         if (hasLocationPermission) {
             alertDialogGpsCheck()
         } else {
-            ActivityCompat.requestPermissions(
-                activity,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ), LOCATION_REQ_CODE
-            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val showRational = activity.shouldShowRequestPermissionRationale(permission[0])
+                if (showRational) {
+                    showDialogForSettings()
+                } else {
+                    showDialogForPermission()
+                }
+            } else {
+                ActivityCompat.requestPermissions(
+                    activity,
+                    permission,
+                    LOCATION_REQ_CODE
+                )
+            }
+
         }
     }
 
-    fun alertDialogGpsCheck() {
+    fun showDialogForSettings() {
+        if (this::dialog.isInitialized)
+            dialog.dismiss()
+        dialog = AlertDialog.Builder(activity)
+            .setMessage("Sozlamalar bo'limiga kirib ilovani ichidan locationga ruxsat bering!")
+            .setCancelable(false)
+            .setPositiveButton(
+                "Sozlamalarni ochish"
+            ) { dialog, id ->
+                activity.startActivity(
+                    Intent(
+                        Settings.ACTION_APPLICATION_SETTINGS
+                    )
+                )
+            }
+            .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
+                activity.finishAffinity()
+            }
+            .setOnDismissListener {
+                it.dismiss()
+            }
+            .create()
+        dialog.show()
+    }
+
+    private fun alertDialogGpsCheck() {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             if (location == null) {
-                AlertDialog.Builder(activity)
+                if (this::dialog.isInitialized)
+                    dialog.dismiss()
+                dialog = AlertDialog.Builder(activity)
                     .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
                     .setCancelable(false)
                     .setPositiveButton(
@@ -96,7 +135,8 @@ class LocationHelper(val activity: Activity) {
                     .setOnDismissListener {
                         it.dismiss()
                     }
-                    .show()
+                    .create()
+                dialog.show()
             }
         } else {
             getLocation()
@@ -105,30 +145,42 @@ class LocationHelper(val activity: Activity) {
     }
 
     fun showDialogForPermission() {
-        AlertDialog.Builder(activity)
-            .setMessage("Joylashuvingizni aniqlashimiz uchun ruxsat bering!")
+        if (this::dialog.isInitialized) {
+            Log.d(TAG, "showDialogForPermission: dismiss")
+            dialog.dismiss()
+        }
+
+        dialog = AlertDialog.Builder(activity)
+            .setMessage("Joylashuvingizni aniqlashimiz uchun ruxsat bering. Busiz ilova ishlamaydi!")
             .setCancelable(false)
             .setPositiveButton(
                 "Ruxsat berish"
             ) { _, _ ->
                 ActivityCompat.requestPermissions(
-                    activity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    activity,
+                    permission,
                     LOCATION_REQ_CODE
                 )
             }
-            .setNegativeButton("Bekor qilish") { _: DialogInterface, _: Int ->
-                activity.finishAffinity()
-            }
+//            .setNegativeButton("Bekor qilish") { _: DialogInterface, _: Int ->
+////                activity.finish()
+//                showDialogForPermission()
+//            }
             .setOnDismissListener {
                 it.dismiss()
             }
-            .show()
+            .create()
+        dialog.show()
+    }
 
+    fun dialogDismiss() {
+        if (this::dialog.isInitialized)
+            dialog.dismiss()
     }
 
 
     @SuppressLint("MissingPermission")
-    fun getLocation() {
+    private fun getLocation() {
 
         Log.d(
             TAG,
