@@ -1,9 +1,7 @@
 package com.example.prayertime.repository
 
-import com.azan.astrologicalCalc.SimpleDate
 import com.example.prayertime.model.Times
 import com.example.prayertime.database.TimesByYearDao
-import javax.sql.DataSource
 
 class TimesRepository(private val dataSource: TimesByYearDao) {
 
