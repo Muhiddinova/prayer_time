@@ -2,6 +2,8 @@ package com.example.prayertime.ui.mosque
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -21,6 +23,9 @@ import com.directions.route.Routing
 import com.directions.route.RoutingListener
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentMosqueBinding
+import com.example.prayertime.ui.prayerTime.LATITUDE
+import com.example.prayertime.ui.prayerTime.LONGITUDE
+import com.example.prayertime.ui.prayerTime.MY_PREFS
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -56,11 +61,14 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     private val PROXIMITY_RADIUS = 5000
     private lateinit var observable: Observable<Place>
     private val url: String? = null
+    private lateinit var prefs: SharedPreferences
+    private var location: Location? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        getSavedLocation()
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mosque, container, false)
         Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
 
@@ -83,15 +91,17 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
             override fun onClick(v: View) {
                 Log.d("onClick", "Button is Clicked")
                 mMap.clear()
-                val url = getUrl(41.311081, 69.240562, Mosque)
+                val url = location?.let { getUrl(it.latitude, it.longitude, Mosque) }
                 val DataTransfer = arrayOfNulls<Any>(2)
                 DataTransfer[0] = mMap
                 DataTransfer[1] = url
-                Log.d("onClick", url)
+                if (url != null) {
+                    Log.d(TAG, "url: $url")
+                }
 
                 getNearbyPlaceData(DataTransfer)
                 Log.d(TAG, "onCreateView: ")
-                Toast.makeText(requireContext(), "Nearby Restaurants", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Nearby Mosques", Toast.LENGTH_LONG).show()
             }
         })
         return binding.root
@@ -103,22 +113,24 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
         Log.d(TAG, "onMapReady: ")
         mMap = googleMap
 //        val uzb = LatLng(-34.0, 151.0)
-        val uzb = LatLng(41.311081, 69.240562)
+        val uzb = location?.let { LatLng(it.latitude, it.longitude) }
         mMap.addMarker(
-            MarkerOptions()
-                .position(uzb)
-                .title("O'zbekiston")
+            uzb?.let {
+                MarkerOptions()
+                    .position(it)
+                    .title("O'zbekiston")
+            }
         )
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(uzb))
         mMap.mapType = GoogleMap.MAP_TYPE_TERRAIN
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.isTrafficEnabled = true
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(uzb, 13F))
         mMap.setOnMapClickListener(this)
         mMap.setInfoWindowAdapter(this)
         mMap.setOnMyLocationButtonClickListener(this)
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(11F))
+//        mMap.animateCamera(CameraUpdateFactory.zoomTo(11F))
         Log.d(TAG, "onMapReady: $this")
         enableLocation()
     }
@@ -368,7 +380,7 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
                     }
 
                 } catch (e: java.lang.Exception) {
-                    Log.e(TAG, "getNearbyPlaceData: ",e )
+                    Log.e(TAG, "getNearbyPlaceData: ", e)
 
                 }
 
@@ -405,13 +417,28 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
             val placeName = googlePlace["place_name"]
             val vicinity = googlePlace["vicinity"]
             val latLng = LatLng(lat, lng)
+            val currentLocation = location?.let { LatLng(it.latitude, it.longitude) }
             markerOptions.position(latLng)
             markerOptions.title("$placeName : $vicinity")
             mMap.addMarker(markerOptions)
             markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
             //move map camera
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
-            mMap.animateCamera(CameraUpdateFactory.zoomTo(11f))
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 13F))
+//            mMap.animateCamera(CameraUpdateFactory.zoomTo(13f))
+        }
+    }
+
+    private fun getSavedLocation() {
+        prefs = activity?.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)!!
+        val latitudeSt = prefs.getString(LATITUDE, null)
+        val longtitudeSt = prefs.getString(LONGITUDE, null)
+        if (latitudeSt != null && longtitudeSt != null) {
+            location = Location("")
+            location!!.latitude = latitudeSt.toDouble()
+            location!!.longitude = longtitudeSt.toDouble()
+            Log.d(TAG, "getSavedLocation: ${location?.latitude}")
+        }else{
+            Toast.makeText(requireContext(), "location is null", Toast.LENGTH_SHORT).show()
         }
     }
 
