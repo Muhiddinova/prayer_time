@@ -1,12 +1,14 @@
 package com.example.prayertime.model
 
 import android.os.Build
+import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.azan.astrologicalCalc.SimpleDate
+import kotlinx.parcelize.Parcelize
 import java.util.*
 
 @Entity(tableName = "times")

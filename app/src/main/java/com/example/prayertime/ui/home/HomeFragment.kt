@@ -27,14 +27,12 @@ import com.example.prayertime.helper.TimeHelper
 import com.example.prayertime.model.HomeItem
 import com.example.prayertime.helper.Notification
 import com.example.prayertime.model.Times
-import com.example.prayertime.ui.prayerTime.PrayerTimeVIewModelFactory
-import com.example.prayertime.ui.prayerTime.PrayerTimeViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.*
 
 
-class HomeFragment : Fragment(), AdapterHome.RvItemListener {
+class HomeFragment : Fragment(), AdapterHome.RvItemListener{
 
 
     @SuppressLint("SimpleDateFormat")
@@ -241,6 +239,4 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
 
     }
-
-
 }
