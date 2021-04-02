@@ -68,6 +68,8 @@ class LocationHelper(private val activity: Activity) {
         ) == PackageManager.PERMISSION_GRANTED
         if (hasLocationPermission) {
             alertDialogGpsCheck()
+            Log.d(TAG, "checkLocationPermission: Location after gps turning on dialog")
+            getLocation()
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 val showRational = activity.shouldShowRequestPermissionRationale(permission[0])
@@ -114,15 +116,14 @@ class LocationHelper(private val activity: Activity) {
 
     private fun alertDialogGpsCheck() {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (location == null) {
-                if (this::dialog.isInitialized)
-                    dialog.dismiss()
+            if (location == null){
+                if (this::dialog.isInitialized) dialog.dismiss()
                 dialog = AlertDialog.Builder(activity)
                     .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
                     .setCancelable(false)
                     .setPositiveButton(
                         "Sozlamalarni ochish"
-                    ) { dialog, id ->
+                    ) { _, _ ->
                         activity.startActivity(
                             Intent(
                                 Settings.ACTION_LOCATION_SOURCE_SETTINGS
@@ -193,21 +194,22 @@ class LocationHelper(private val activity: Activity) {
             locationListener
         )
         getSavedLocation()
-        Log.d(TAG, "onLocationChanged: ${location?.latitude}")
     }
 
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(locationResult: Location) {
+            Log.d(TAG, "before location check: ${locationResult.latitude}")
+            Log.d(TAG, "before location check: ${location?.latitude}")
             if (location != null) {
                 val distance = locationResult.distanceTo(location)
-                Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
+                Log.d(TAG, "location is not null onLocationChanged: ${locationResult.latitude}")
                 if (distance > 50000) {
                     location = locationResult
                     locationObservable.value = locationResult
                     savePrefs()
                 }
             } else {
-                Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
+                Log.d(TAG, "location is null onLocationChanged: ${locationResult.latitude}")
                 location = locationResult
                 locationObservable.value = locationResult
                 Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
@@ -232,12 +234,13 @@ class LocationHelper(private val activity: Activity) {
     private fun getSavedLocation() {
         val latitudeSt = prefs.getString(LATITUDE, null)
         val longtitudeSt = prefs.getString(LONGITUDE, null)
+        Log.d(TAG, "getSavedLocation: ${location?.latitude}")
         if (latitudeSt != null && longtitudeSt != null) {
             location = Location("")
             location!!.latitude = latitudeSt.toDouble()
             location!!.longitude = longtitudeSt.toDouble()
             locationObservable.value = location!!
+            Log.d(TAG, "if location is not null getSavedLocation: ${location?.latitude}")
         }
-        Log.d(TAG, "getSavedLocation: ${location?.latitude}")
     }
 }

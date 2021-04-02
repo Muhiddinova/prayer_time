@@ -61,7 +61,6 @@ class CompassFragment : Fragment(), SensorEventListener {
     private lateinit var sensorManager: SensorManager
     private lateinit var binding: FragmentCompassBinding
     private lateinit var viewModel: CompassViewModel
-    private lateinit var locationManager: LocationManager
     private lateinit var gmt: TimeZone
     private var degree: Double = 0.0
     private var longtitude: Float = 0f
@@ -153,7 +152,8 @@ class CompassFragment : Fragment(), SensorEventListener {
                     val orientation = FloatArray(3)
                     SensorManager.getOrientation(R, orientation)
                     azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
-                    azimuth = ((azimuth - degree + 360) % 360).toFloat()
+                    Log.d(TAG, "onSensorChanged: degree: $degree")
+                    azimuth = ((azimuth + degree*2 + 360) % 360).toFloat()
 
                     val anim: Animation = RotateAnimation(
                         -currentAzimuth, -azimuth,
@@ -162,7 +162,7 @@ class CompassFragment : Fragment(), SensorEventListener {
                     )
                     currentAzimuth = azimuth
 
-                    anim.duration = 100
+                    anim.duration = 500
                     anim.repeatCount = 0
                     anim.fillAfter = true
                     binding.imgCompass.startAnimation(anim)
@@ -183,6 +183,7 @@ class CompassFragment : Fragment(), SensorEventListener {
             location.longitude = longtitudeSt.toDouble()
             locationHelper.getLocationLiveData().observe(this){
                 location = it
+                Log.d(TAG, "getSavedLocation: ${location.latitude}")
             }
         }
         Log.d(TAG, "getSavedLocation: ${location.latitude}")

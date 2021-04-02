@@ -48,10 +48,10 @@ class MainActivity : AppCompatActivity() {
         showProgress()
         locationHelper.checkLocationPermission()
         locationHelper.getLocationLiveData().observe(this) {
-            Log.d(TAG, "onCreate: ${it.longitude}")
+            Log.d(TAG, "onCreate Location: ${it.longitude}")
             if (it != null) {
-                Log.d(TAG, "onCreate: ${it.longitude}")
-                Log.d(TAG, "onCreate: ${it.latitude}")
+                Log.d(TAG, "onCreate Location: ${it.longitude}")
+                Log.d(TAG, "onCreate Location: ${it.latitude}")
                 progress.dismiss()
                 viewModel.timeInitializer(it)
             }
@@ -75,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == LOCATION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationHelper.hasLocationPermission = true
-                locationHelper.showDialogForPermission()
+//                locationHelper.showDialogForPermission()
             } else if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     val showRational = shouldShowRequestPermissionRationale(permissions[0])
