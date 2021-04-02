@@ -1,28 +1,24 @@
-package com.example.prayertime.mainActivity
+package com.example.prayertime.ui.mainActivity
 
+import android.app.Dialog
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import com.azan.astrologicalCalc.Location
 import com.example.prayertime.R
 import com.example.prayertime.database.RoomDatabase
-import com.example.prayertime.database.TimesByYearDao
 import com.example.prayertime.databinding.ActivityMainBinding
 import com.example.prayertime.helper.LocationHelper
-import com.example.prayertime.helper.TimeHelper
 import com.example.prayertime.ui.prayerTime.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import java.util.*
 
-class MainActivity: AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val TAG = "MainActivity Main"
     private lateinit var viewModel: MainActivityViewModel
@@ -30,6 +26,7 @@ class MainActivity: AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var locationManager: LocationManager
     private lateinit var locationHelper: LocationHelper
+    private lateinit var progress: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +37,7 @@ class MainActivity: AppCompatActivity() {
         locationHelper = LocationHelper.getInstance(this)
         navController = navHost.navController
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+        progress = Dialog(this)
         val dataSource = RoomDatabase.getDatabase(this).timesByYearDao
         val factory = MainActivityViewModelFactory(dataSource)
         viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
@@ -47,11 +45,24 @@ class MainActivity: AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        showProgress()
+        locationHelper.checkLocationPermission()
         locationHelper.getLocationLiveData().observe(this) {
-            Log.d(TAG, "onCreate: ${it.longitude}")
-            Log.d(TAG, "onCreate: ${it.latitude}")
-            viewModel.timeInitializer(it)
+            Log.d(TAG, "onCreate Location: ${it.longitude}")
+            if (it != null) {
+                Log.d(TAG, "onCreate Location: ${it.longitude}")
+                Log.d(TAG, "onCreate Location: ${it.latitude}")
+                progress.dismiss()
+                viewModel.timeInitializer(it)
+            }
         }
+    }
+
+    private fun showProgress() {
+        progress.setContentView(R.layout.progress_dialog)
+        progress.setCancelable(false)
+        progress.show()
+
     }
 
 
@@ -64,10 +75,30 @@ class MainActivity: AppCompatActivity() {
         if (requestCode == LOCATION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationHelper.hasLocationPermission = true
-                locationHelper.alertDialogGpsCheck()
+//                locationHelper.showDialogForPermission()
+            } else if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                    val showRational = shouldShowRequestPermissionRationale(permissions[0])
+                    if (showRational) {
+                        locationHelper.showDialogForPermission()
+                    } else {
+                        locationHelper.showDialogForSettings()
+                    }
+                } else {
+                    locationHelper.checkLocationPermission()
+                }
             } else {
                 locationHelper.showDialogForPermission()
             }
         }
+
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        progress.dismiss()
+        locationHelper.dialogDismiss()
+    }
+
+
 }

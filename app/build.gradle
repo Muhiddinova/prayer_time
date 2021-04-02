@@ -14,7 +14,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -79,6 +79,7 @@ dependencies {
     //maps lib
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation 'com.github.jd-alexander:library:1.1.0'
 
     //room
     def room_version = "2.2.6"
@@ -104,7 +105,6 @@ dependencies {
 
     //work-manager
     def work_version = "2.5.0"
-    implementation 'android.work:work-runtime:2.1.0-alpha02'
     implementation "androidx.work:work-runtime-ktx:$work_version"
     // optional - RxJava2 support
     implementation "androidx.work:work-rxjava2:$work_version"

@@ -1,20 +1,12 @@
 package com.example.prayertime.helper
 
-import android.R.attr.delay
-import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
 import android.os.Build
-import android.os.SystemClock
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getSystemService
 import com.example.prayertime.R
-import com.example.prayertime.mainActivity.MainActivity
 
 
 class Notification(private val context: Context) {

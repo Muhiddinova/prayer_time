@@ -33,6 +33,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.prayertime.R
 import com.example.prayertime.databinding.FragmentCompassBinding
+import com.example.prayertime.helper.LocationHelper
 import com.example.prayertime.ui.prayerTime.LAST_LOCATION_UPDATE
 import com.example.prayertime.ui.prayerTime.LATITUDE
 import com.example.prayertime.ui.prayerTime.LONGITUDE
@@ -49,28 +50,25 @@ import kotlin.math.sin
 //const val LAST_LOCATION_UPDATE = "lastLocationUpdate"
 //const val LOCATION_REQ_CODE = 1001
 
-class CompassFragment : Fragment(), SensorEventListener, LocationListener {
+class CompassFragment : Fragment(), SensorEventListener {
 
+    private var TAG = "CompassFragment"
     private var mGravity: FloatArray = FloatArray(3)
     private var mGeomagnetic: FloatArray = FloatArray(3)
     private var azimuth = 180f
     private var currentAzimuth = 180f
-    private var latitude: String? = null
-    private var longitude: String? = null
     private lateinit var prefs: SharedPreferences
     private lateinit var sensorManager: SensorManager
     private lateinit var binding: FragmentCompassBinding
     private lateinit var viewModel: CompassViewModel
-    private lateinit var locationManager: LocationManager
     private lateinit var gmt: TimeZone
     private var degree: Double = 0.0
-    private var location: Location? = null
-    private var mLocation: com.azan.astrologicalCalc.Location? = null
-    private val locationPermissionCode = 2
     private var longtitude: Float = 0f
     private var lattitude: Float = 0f
     private var result: Double = 0.0
     private var intDegree: Int = 0
+    private lateinit var locationHelper: LocationHelper
+    private lateinit var location: Location
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
@@ -81,6 +79,9 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
         viewModel = ViewModelProvider(this).get(CompassViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_compass, container, false)
         binding.imgCompass.startAnimation()
+        prefs = requireContext().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
+        locationHelper = LocationHelper.getInstance(requireActivity())
+        gmt = TimeZone.getDefault()
         sensorManager =
             (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager?)!!
         if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null ||
@@ -95,19 +96,15 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                 .show()
 
         }
-        gmt = TimeZone.getDefault()
-        Log.d("CompassFragment:", "sensorManager $sensorManager")
-        getLocation()
-        degree = getDegree()
-        intDegree = degree.toInt()
 
-        Log.d("gps", "getLocation  : $degree")
-        binding.tvLocation.text = "$intDegree Degree "
+        Log.d("CompassFragment:", "sensorManager $sensorManager")
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
+
+        getSavedLocation()
 
         sensorManager.registerListener(
             this,
@@ -119,6 +116,12 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
             sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
             SensorManager.SENSOR_DELAY_GAME
         )
+
+        degree = getDegree()
+        intDegree = degree.toInt()
+
+        Log.d("gps", "getLocation  : $degree")
+        binding.tvLocation.text = "$intDegree Degree "
     }
 
     override fun onPause() {
@@ -149,7 +152,8 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                     val orientation = FloatArray(3)
                     SensorManager.getOrientation(R, orientation)
                     azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
-                    azimuth = ((azimuth - degree + 360) % 360).toFloat()
+                    Log.d(TAG, "onSensorChanged: degree: $degree")
+                    azimuth = ((azimuth + degree*2 + 360) % 360).toFloat()
 
                     val anim: Animation = RotateAnimation(
                         -currentAzimuth, -azimuth,
@@ -158,7 +162,7 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
                     )
                     currentAzimuth = azimuth
 
-                    anim.duration = 100
+                    anim.duration = 500
                     anim.repeatCount = 0
                     anim.fillAfter = true
                     binding.imgCompass.startAnimation(anim)
@@ -168,142 +172,146 @@ class CompassFragment : Fragment(), SensorEventListener, LocationListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        var mAccelerometerAccuracy: Int = 0
-        var mMagneticAccuracy: Int = 0
-        when (sensor!!.type) {
-            Sensor.TYPE_ACCELEROMETER -> mAccelerometerAccuracy = accuracy
-            Sensor.TYPE_MAGNETIC_FIELD -> mMagneticAccuracy = accuracy
-            else -> {
-            }
-        }
-    }
-
-    override fun onLocationChanged(location: Location) {
-        lattitude = location.latitude.toFloat()
-        longtitude = location.longitude.toFloat()
-    }
-
-    private fun getLocation() {
-        Log.d("CompassFragment", "getLocation: getLocation working")
-
-//        val mFusedLoactionProvider =
-//            LocationServices.getFusedLocationProviderClient(requireContext())
-//        if (ActivityCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_COARSE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return
-//        }
-//        mFusedLoactionProvider.locationAvailability
-//            .addOnSuccessListener {
-//                if (!it.isLocationAvailable) {
-//                    AlertDialog.Builder(context)
-//                        .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqing.")
-//                        .setPositiveButton(
-//                            "Sozlamalarni ochish"
-//                        ) { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-//                        .setNegativeButton("Qolish", null)
-//                        .setOnDismissListener {
-//                            getSavedLocation()
-//                        }
-//                        .show()
-//
-//
-//                } else {
-//                    getLocationWhileGPSEnabled()
-//                }
-//
-//            }
-//            .addOnFailureListener {
-//                Log.e("CompassFragment", "getLocation: $it")
-//            }
-//            .addOnCanceledListener {
-//                Log.e("CompassFragment", "getLocation: operation canceled")
-//            }
-
-
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            AlertDialog.Builder(requireContext())
-                .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
-                .setPositiveButton(
-                    "Sozlamalarni ochish"
-                ) { _, _ -> this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-                .setOnDismissListener{findNavController().popBackStack()}
-                .show()
-            getSavedLocation()
-        } else {
-            getLocationWhileGPSEnabled()
-        }
-
-    }
-
-    fun getLocationWhileGPSEnabled() {
-        locationManager =
-            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if ((ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED)
-        ) {
-            ActivityCompat.requestPermissions(
-                requireContext() as Activity,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                locationPermissionCode
-            )
-        }
-        locationManager.requestLocationUpdates(
-            LocationManager.GPS_PROVIDER,
-            5000,
-            5f
-        ) {
-            location?.let {
-                lattitude = it.latitude.toFloat()
-                longtitude = it.longitude.toFloat()
-            }
-        }
-        savePrefs()
-    }
-
-    private fun savePrefs() {
-        prefs = activity?.getPreferences(Context.MODE_PRIVATE)!!
-        prefs.edit()
-            .putString(LATITUDE, latitude)
-            .putString(LONGITUDE, longitude)
-            .putLong(LAST_LOCATION_UPDATE, System.currentTimeMillis())
-            .apply()
     }
 
     private fun getSavedLocation() {
-        prefs = requireActivity().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
-        latitude = prefs.getString(LATITUDE, null)
-        longitude = prefs.getString(LONGITUDE, null)
-        val lastUpdateTime = prefs.getLong(LAST_LOCATION_UPDATE, 0)
-
-        if (latitude != null && longitude != null
-            && System.currentTimeMillis() - lastUpdateTime < 86400000 * 7
-        ) {
-            location = android.location.Location("")
-            location!!.latitude = latitude!!.toDouble()
-            location!!.longitude = longitude!!.toDouble()
-            mLocation = com.azan.astrologicalCalc.Location(
-                latitude!!.toDouble(),
-                longitude!!.toDouble(),
-                gmt.rawOffset / 3600000.toDouble(),
-                0
-            )
+        val latitudeSt = prefs.getString(LATITUDE, null)
+        val longtitudeSt = prefs.getString(LONGITUDE, null)
+        if (latitudeSt != null && longtitudeSt != null) {
+            location = Location("")
+            location.latitude = latitudeSt.toDouble()
+            location.longitude = longtitudeSt.toDouble()
+            locationHelper.getLocationLiveData().observe(this){
+                location = it
+                Log.d(TAG, "getSavedLocation: ${location.latitude}")
+            }
         }
+        Log.d(TAG, "getSavedLocation: ${location.latitude}")
     }
+
+
+
+//    private fun getLocation() {
+//        Log.d("CompassFragment", "getLocation: getLocation working")
+//
+////        val mFusedLoactionProvider =
+////            LocationServices.getFusedLocationProviderClient(requireContext())
+////        if (ActivityCompat.checkSelfPermission(
+////                requireContext(),
+////                Manifest.permission.ACCESS_FINE_LOCATION
+////            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+////                requireContext(),
+////                Manifest.permission.ACCESS_COARSE_LOCATION
+////            ) != PackageManager.PERMISSION_GRANTED
+////        ) {
+////            // TODO: Consider calling
+////            //    ActivityCompat#requestPermissions
+////            // here to request the missing permissions, and then overriding
+////            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+////            //                                          int[] grantResults)
+////            // to handle the case where the user grants the permission. See the documentation
+////            // for ActivityCompat#requestPermissions for more details.
+////            return
+////        }
+////        mFusedLoactionProvider.locationAvailability
+////            .addOnSuccessListener {
+////                if (!it.isLocationAvailable) {
+////                    AlertDialog.Builder(context)
+////                        .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqing.")
+////                        .setPositiveButton(
+////                            "Sozlamalarni ochish"
+////                        ) { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+////                        .setNegativeButton("Qolish", null)
+////                        .setOnDismissListener {
+////                            getSavedLocation()
+////                        }
+////                        .show()
+////
+////
+////                } else {
+////                    getLocationWhileGPSEnabled()
+////                }
+////
+////            }
+////            .addOnFailureListener {
+////                Log.e("CompassFragment", "getLocation: $it")
+////            }
+////            .addOnCanceledListener {
+////                Log.e("CompassFragment", "getLocation: operation canceled")
+////            }
+//
+//
+//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//            AlertDialog.Builder(requireContext())
+//                .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
+//                .setPositiveButton(
+//                    "Sozlamalarni ochish"
+//                ) { _, _ -> this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+//                .setOnDismissListener{findNavController().popBackStack()}
+//                .show()
+//            getSavedLocation()
+//        } else {
+//            getLocationWhileGPSEnabled()
+//        }
+//
+//    }
+//
+//    fun getLocationWhileGPSEnabled() {
+//        locationManager =
+//            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//        if ((ContextCompat.checkSelfPermission(
+//                requireContext(),
+//                Manifest.permission.ACCESS_FINE_LOCATION
+//            ) != PackageManager.PERMISSION_GRANTED)
+//        ) {
+//            ActivityCompat.requestPermissions(
+//                requireContext() as Activity,
+//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+//                locationPermissionCode
+//            )
+//        }
+//        locationManager.requestLocationUpdates(
+//            LocationManager.GPS_PROVIDER,
+//            5000,
+//            5f
+//        ) {
+//            location?.let {
+//                lattitude = it.latitude.toFloat()
+//                longtitude = it.longitude.toFloat()
+//            }
+//        }
+//        savePrefs()
+//    }
+//
+//    private fun savePrefs() {
+//        prefs = activity?.getPreferences(Context.MODE_PRIVATE)!!
+//        prefs.edit()
+//            .putString(LATITUDE, latitude)
+//            .putString(LONGITUDE, longitude)
+//            .putLong(LAST_LOCATION_UPDATE, System.currentTimeMillis())
+//            .apply()
+//    }
+//
+//    private fun getSavedLocation() {
+//        prefs = requireActivity().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
+//        latitude = prefs.getString(LATITUDE, null)
+//        longitude = prefs.getString(LONGITUDE, null)
+//        val lastUpdateTime = prefs.getLong(LAST_LOCATION_UPDATE, 0)
+//
+//        if (latitude != null && longitude != null
+//            && System.currentTimeMillis() - lastUpdateTime < 86400000 * 7
+//        ) {
+//            location = android.location.Location("")
+//            location!!.latitude = latitude!!.toDouble()
+//            location!!.longitude = longitude!!.toDouble()
+//            mLocation = com.azan.astrologicalCalc.Location(
+//                latitude!!.toDouble(),
+//                longitude!!.toDouble(),
+//                gmt.rawOffset / 3600000.toDouble(),
+//                0
+//            )
+//        }
+//    }
 
     private fun getDegree(): Double {
         val kaabaLng =
