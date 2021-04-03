@@ -61,7 +61,6 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     private lateinit var latLng: LatLng
 
 
-
     @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,13 +68,14 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mosque, container, false)
-        Variables.isNetworkAvailable.observe(requireActivity()){ result->
-            Log.d(TAG, "Variables: $result")
-            if (result==true) {
-                binding.btnMosque.setOnClickListener(object : View.OnClickListener {
 
-                    var Mosque = "mosque"
-                    override fun onClick(v: View) {
+        binding.btnMosque.setOnClickListener(object : View.OnClickListener {
+
+            var Mosque = "mosque"
+            override fun onClick(v: View) {
+                Variables.isNetworkAvailable.observe(requireActivity()) { result ->
+                    Log.d(TAG, "Variables: $result")
+                    if (result == true) {
                         Log.d("onClick", "Button is Clicked")
                         mMap.clear()
                         val url = getUrl(latLng.latitude, latLng.longitude, Mosque)
@@ -92,24 +92,24 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
                             Toast.LENGTH_LONG
                         )
                             .show()
-                    }
-                })
-            }else{
-                AlertDialog.Builder(activity)
-                    .setView(R.layout.dialog_internet)
-                    .setMessage("Internet yoqilmagan iltimos xaritadan foydalana olishingiz uchun internetni yoqing")
-                    .setCancelable(false)
-                    .setIcon(R.raw.internet)
-                    .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
+                    } else {
+                        AlertDialog.Builder(activity)
+                            .setView(R.layout.dialog_internet)
+                            .setMessage("Internet yoqilmagan iltimos xaritadan foydalana olishingiz uchun internetni yoqing")
+                            .setCancelable(true)
+                            .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
+                            }
+                            .setOnDismissListener {
+                                it.dismiss()
+                            }
+                            .show()
 
                     }
-                    .setOnDismissListener {
-                        it.dismiss()
-                    }
-                    .show()
-
+                }
             }
-        }
+        })
+
+
         Places.initialize(requireContext(), resources.getString(R.string.google_maps_key))
         mPlacesClient = Places.createClient(requireActivity())
         sIsPermissionGranted = ContextCompat.checkSelfPermission(
@@ -136,13 +136,14 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
 
 
     override fun onMapReady(googleMap: GoogleMap) {
-        locationHelper=LocationHelper.getInstance(requireActivity())
+        locationHelper = LocationHelper.getInstance(requireActivity())
 
-        locationHelper.getLocationLiveData().observe(this) {
-            Log.d(TAG, "onCreate: ${it.longitude}")
-            Log.d(TAG, "onCreate: ${it.latitude}")
-            latLng= LatLng(it.latitude, it.longitude)
-        }
+//        locationHelper.getLocationLiveData().observe(this) {
+//            Log.d(TAG, "onCreate: ${it.longitude}")
+//            Log.d(TAG, "onCreate: ${it.latitude}")
+//            latLng = LatLng(it.latitude, it.longitude)
+//        }
+        latLng=LatLng(41.199243078750214, 69.16348706307389)
         mMap = googleMap
         mMap.addMarker(
             MarkerOptions()
@@ -296,7 +297,11 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
         val list = arrayListOf<String>()
 
         val placeFiles =
-            arrayListOf(Place.Field.NAME, Place.Field.ADDRESS, Place.Field.USER_RATINGS_TOTAL)
+            arrayListOf(
+                Place.Field.NAME,
+                Place.Field.ADDRESS,
+                Place.Field.USER_RATINGS_TOTAL
+            )
 
         val request = FindCurrentPlaceRequest.newInstance(placeFiles)
 
@@ -324,7 +329,11 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
 
     }
 
-    private fun getUrl(latitude: Double, longitude: Double, nearbyPlace: String): String {
+    private fun getUrl(
+        latitude: Double,
+        longitude: Double,
+        nearbyPlace: String
+    ): String {
         val googlePlacesUrl =
             java.lang.StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?")
         googlePlacesUrl.append("location=$latitude,$longitude")
@@ -405,7 +414,12 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
             markerOptions.position(latLng)
             mMap.addMarker(
                 MarkerOptions()
-                    .icon(bitmapDescriptorFromVector(requireContext(), R.drawable.ic_mosque))
+                    .icon(
+                        bitmapDescriptorFromVector(
+                            requireContext(),
+                            R.drawable.ic_mosque
+                        )
+                    )
                     .position(latLng)
                     .title(placeName.toString())
                     .snippet(vicinity.toString())
@@ -415,6 +429,7 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
             mMap.animateCamera(CameraUpdateFactory.zoomTo(13f))
         }
     }
+
     private fun bitmapDescriptorFromVector(
         context: Context,
         @DrawableRes vectorDrawableResourceId: Int
