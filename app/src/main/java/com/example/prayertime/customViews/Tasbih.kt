@@ -122,7 +122,7 @@ class Tasbih @JvmOverloads constructor(
 
 
     fun startAnimation() {
-        mValueAnimator.duration = 500
+        mValueAnimator.duration = 1000
         mValueAnimator.interpolator = AccelerateDecelerateInterpolator()
         mValueAnimator.addUpdateListener(this)
         mIsAnimationStart = true
@@ -138,11 +138,11 @@ class Tasbih @JvmOverloads constructor(
                 val size =
                     (mListSizes[i + 1] - mListSizes[i - 1]) * mAnimatedValue / 100 + mListSizes[i - 1]
                 when (i) {
-                    16 -> {
-                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
-                    }
                     2 -> {
                         sPaint.alpha = 255 * mAnimatedValue / 100
+                    }
+                    16 -> {
+                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
                     }
                     else -> sPaint.alpha = 255
                 }
@@ -157,10 +157,16 @@ class Tasbih @JvmOverloads constructor(
                 }
 
             } else {
-                if (i == 17)
-                    sPaint.alpha = 255 - 255 * mAnimatedValue / 100
-                else
-                    sPaint.alpha = 255
+                when (i) {
+                    1 -> {
+                        sPaint.alpha = 255 * mAnimatedValue / 100
+                    }
+                    17 -> {
+                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
+                    }
+                    else -> sPaint.alpha = 255
+                }
+
                 getBitmap(mListSizes[i - 1])?.let {
                     canvas?.drawBitmap(
                         it,
@@ -178,7 +184,7 @@ class Tasbih @JvmOverloads constructor(
 
 
     private fun drawCircle(canvas: Canvas?) {
-        (1..17).forEach { i ->
+        (3..17).forEach { i ->
             getBitmap(mListSizes[i - 1])?.let {
                 canvas?.drawBitmap(
                     it,
