@@ -41,6 +41,7 @@ const val MY_PREFS = "myPrefs"
 const val LAST_LOCATION_UPDATE = "lastLocationUpdate"
 const val LOCATION_REQ_CODE = 1001
 
+
 class PrayerTimeFragment : Fragment() {
     private val TAG = "PrayerTimeFragment"
 
