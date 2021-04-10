@@ -23,6 +23,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.prayertime.ui.prayerTime.*
 
+const val LATITUDE = "latitude"
+const val LONGITUDE = "longitude"
+const val MY_PREFS = "myPrefs"
+const val LAST_LOCATION_UPDATE = "lastLocationUpdate"
+const val LOCATION_REQ_CODE = 1001
+var FINISH_FLAG = 0
+
 
 class LocationHelper(private val activity: Activity) {
 
@@ -47,7 +54,6 @@ class LocationHelper(private val activity: Activity) {
             INSTANCE!!.initialize()
             return INSTANCE!!
         }
-
     }
 
     fun getLocationLiveData(): LiveData<Location> {
@@ -66,6 +72,7 @@ class LocationHelper(private val activity: Activity) {
             activity,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
+
         if (hasLocationPermission) {
             alertDialogGpsCheck()
             Log.d(TAG, "checkLocationPermission: Location after gps turning on dialog")
@@ -163,10 +170,6 @@ class LocationHelper(private val activity: Activity) {
                     LOCATION_REQ_CODE
                 )
             }
-//            .setNegativeButton("Bekor qilish") { _: DialogInterface, _: Int ->
-////                activity.finish()
-//                showDialogForPermission()
-//            }
             .setOnDismissListener {
                 it.dismiss()
             }

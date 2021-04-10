@@ -1,13 +1,16 @@
 package com.example.prayertime.ui.mainActivity
 
+import android.Manifest
 import android.app.Dialog
-import android.content.Intent
+import android.content.Context
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -15,8 +18,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.prayertime.R
 import com.example.prayertime.database.RoomDatabase
 import com.example.prayertime.databinding.ActivityMainBinding
-import com.example.prayertime.helper.LocationHelper
-import com.example.prayertime.ui.prayerTime.*
+import com.example.prayertime.helper.*
+import com.example.prayertime.ui.prayerTime.LOCATION_REQ_CODE
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,16 +28,17 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var locationManager: LocationManager
-    private lateinit var locationHelper: LocationHelper
+    private lateinit var locationHelper2: LocationHelper2
     private lateinit var progress: Dialog
+    private lateinit var prefs: SharedPreferences
+    private var location: Location? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val navHost =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        locationHelper = LocationHelper.getInstance(this)
+        locationHelper2 = LocationHelper2.getInstance(this)
         navController = navHost.navController
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         progress = Dialog(this)
@@ -45,16 +49,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        showProgress()
-        locationHelper.checkLocationPermission()
-        locationHelper.getLocationLiveData().observe(this) {
-            Log.d(TAG, "onCreate Location: ${it.longitude}")
-            if (it != null) {
-                Log.d(TAG, "onCreate Location: ${it.longitude}")
-                Log.d(TAG, "onCreate Location: ${it.latitude}")
-                progress.dismiss()
-                viewModel.timeInitializer(it)
-            }
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && (FINISH_FLAG == 1)
+        ) {
+            locationHelper2.showDialogSecondTime()
+        }else if(ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED){
+            locationHelper2.showDialogGpsCheck()
+            locationHelper2.getLocationViaProviders()
         }
     }
 
@@ -65,7 +71,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -74,31 +79,24 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationHelper.hasLocationPermission = true
-//                locationHelper.showDialogForPermission()
-            } else if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
+                locationHelper2.hasPermission = true
+                locationHelper2.getCurrentLocation()
+            } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     val showRational = shouldShowRequestPermissionRationale(permissions[0])
                     if (showRational) {
-                        locationHelper.showDialogForPermission()
+                        locationHelper2.showDialogSecondTime()
                     } else {
-                        locationHelper.showDialogForSettings()
+                        locationHelper2.showDialogThirdTime()
+                        //here has some problems
                     }
-                } else {
-                    locationHelper.checkLocationPermission()
                 }
-            } else {
-                locationHelper.showDialogForPermission()
             }
         }
-
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        progress.dismiss()
-        locationHelper.dialogDismiss()
+        locationHelper2.dialogDismiss()
     }
-
-
 }

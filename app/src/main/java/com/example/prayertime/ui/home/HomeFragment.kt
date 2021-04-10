@@ -1,11 +1,12 @@
 package com.example.prayertime.ui.home
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.pm.PackageManager
-import android.os.Build
-import android.os.Bundle
-import android.os.SystemClock
+import android.content.Context
+import android.content.SharedPreferences
+import android.location.Location
+import android.location.LocationManager
+import android.os.*
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +19,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.azan.astrologicalCalc.Location
 import com.example.prayertime.R
 import com.example.prayertime.database.RoomDatabase
 import com.example.prayertime.databinding.FragmentHomeBinding
-import com.example.prayertime.helper.LocationHelper
-import com.example.prayertime.helper.TimeHelper
+import com.example.prayertime.helper.*
 import com.example.prayertime.model.HomeItem
-import com.example.prayertime.helper.Notification
 import com.example.prayertime.model.Times
-import com.example.prayertime.ui.prayerTime.PrayerTimeVIewModelFactory
-import com.example.prayertime.ui.prayerTime.PrayerTimeViewModel
+import com.google.android.youtube.player.internal.h
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.*
@@ -37,19 +34,20 @@ import java.util.Calendar.*
 class HomeFragment : Fragment(), AdapterHome.RvItemListener {
 
 
+    private var TAG = "HomeFragment"
     @SuppressLint("SimpleDateFormat")
     private var timeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm")
-    private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy",Locale.getDefault())
+    private var dateFormat: SimpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
     private var calendar = Calendar.getInstance(Locale.getDefault())
-    private var broadcastReceiver: BroadcastReceiver? = null
-    private var TAG = "HomeFragment"
+    private var location: Location? = null
     private lateinit var binding: FragmentHomeBinding
     private lateinit var mChronometer: Chronometer
-    private lateinit var locationHelper: LocationHelper
     private lateinit var viewModel: HomeFragmentViewModel
-    private lateinit var astroLocation: Location
     private lateinit var gmt: TimeZone
     private lateinit var timeHelper: TimeHelper
+    private lateinit var locationHelper2: LocationHelper2
+    private lateinit var prefs: SharedPreferences
+    private lateinit var locationManager: LocationManager
 
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreateView(
@@ -61,24 +59,120 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         val factory = HomeFragmentViewModelFactory(dataSource)
         viewModel =
             ViewModelProviders.of(requireActivity(), factory).get(HomeFragmentViewModel::class.java)
-        locationHelper = LocationHelper.getInstance(requireActivity())
+        locationHelper2 = LocationHelper2(requireActivity())
         gmt = TimeZone.getDefault()
-
-        makeNotification()
-
         mChronometer = binding.chronometer
-//        mChronometer.format = "HH:MM"
         mChronometer.base = SystemClock.elapsedRealtime()
         mChronometer.start()
-        mChronometer.setOnChronometerTickListener {
-            setTime()
-        }
-
+        mChronometer.setOnChronometerTickListener { setTime() }
         binding.linear.setOnClickListener {
             findNavController().navigate(R.id.prayerTimeFragment)
         }
         setRv()
+//        getLocation()
         return binding.root
+    }
+
+    override fun onClicked(HomeItem: HomeItem) {
+        when (HomeItem.id) {
+            1 -> findNavController().navigate(
+                R.id.tasbeehFragment
+            )
+            2 -> findNavController().navigate(
+                R.id.prayerFragment
+            )
+            3 -> findNavController().navigate(
+                R.id.compassFragment
+            )
+            4 -> findNavController().navigate(
+                R.id.mosqueFragment
+            )
+            5 -> findNavController().navigate(
+                R.id.mediaFragment
+            )
+            6 -> findNavController().navigate(
+                R.id.calendarFragment
+            )
+        }
+    }
+
+    private fun getList(): List<HomeItem> {
+        return listOf(
+
+            HomeItem(
+                1,
+                "Tasbeh",
+                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads) }!!
+            ),
+            HomeItem(
+                2,
+                "Duo",
+                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_dua_hands) }!!
+            ),
+            HomeItem(
+                3,
+                "Qibla",
+                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_compass_ui) }!!
+            ),
+            HomeItem(
+                4,
+                "Masjid",
+                requireContext().let {
+                    ContextCompat.getDrawable(
+                        it,
+                        R.drawable.ic_ramadan_crescent_moon
+                    )
+                }!!
+            ),
+            HomeItem(
+                5,
+                "Ma'ruza",
+                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_cassette) }!!
+            ),
+            HomeItem(
+                6,
+                "Kalendar",
+                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_calendar) }!!
+            )
+        )
+    }
+
+    private fun setRv() {
+        val list = getList()
+        val adapter = AdapterHome(this)
+        adapter.setData(list)
+        binding.rvMain.layoutManager = GridLayoutManager(activity, 3)
+        binding.rvMain.adapter = adapter
+    }
+
+    private fun setTime() {
+        val curentTime = System.currentTimeMillis()
+        binding.chronometer.text = timeFormat.format(curentTime)
+        binding.date.text = dateFormat.format(curentTime)
+    }
+
+    private fun getLocation(){
+        prefs = requireContext().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
+        locationManager =
+            ((requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager?)!!)
+        var flag = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+        while(!flag) {
+            Thread.sleep(1000)
+            if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) flag = true
+        }
+        locationHelper2.getLocationViaProviders()
+        getSavedLocation()
+
+    }
+
+    private fun getSavedLocation() {
+        val latitudeSt = prefs.getString(LATITUDE, null)
+        val longtitudeSt = prefs.getString(LONGITUDE, null)
+        if (latitudeSt != null && longtitudeSt != null) {
+            location?.latitude = latitudeSt.toDouble()
+            location?.longitude = longtitudeSt.toDouble()
+        }
+        Log.d(TAG, "getSavedLocation: ${location?.latitude}")
     }
 
     private fun makeNotification() {
@@ -124,7 +218,6 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     }
 
     private fun getdate() {
-
         viewModel.getFirstElement()
     }
 
@@ -143,104 +236,6 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         calendar.set(MILLISECOND, 0)
     }
 
-    private fun setTime() {
-        val curentTime = System.currentTimeMillis()
-        binding.chronometer.text = timeFormat.format(curentTime)
-        binding.date.text = dateFormat.format(curentTime)
-    }
-
-//    override fun onRequestPermissionsResult(
-//        requestCode: Int,
-//        permissions: Array<out String>,
-//        grantResults: IntArray
-//    ) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == 1) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                locationHelper.checkLocationPermission()
-//                locationHelper.getLocation()
-//            } else {
-//                locationHelper.showDialogForPermission()
-//            }
-//        }
-//
-//    }
-
-    private fun getList(): List<HomeItem> {
-        return listOf(
-
-            HomeItem(
-                1,
-                "Tasbeh",
-                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads) }!!
-            ),
-            HomeItem(
-                2,
-                "Duo",
-                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_dua_hands) }!!
-            ),
-            HomeItem(
-                3,
-                "Qibla",
-                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_compass_ui) }!!
-            ),
-            HomeItem(
-                4,
-                "Masjid",
-                requireContext().let {
-                    ContextCompat.getDrawable(
-                        it,
-                        R.drawable.ic_ramadan_crescent_moon
-                    )
-                }!!
-            ),
-            HomeItem(
-                5,
-                "Ma'ruza",
-                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_cassette) }!!
-            ),
-            HomeItem(
-                6,
-                "Kalendar",
-                requireContext().let { ContextCompat.getDrawable(it, R.drawable.ic_calendar) }!!
-            )
-        )
-
-
-    }
-
-    private fun setRv() {
-        val list = getList()
-        val adapter = AdapterHome(this)
-        adapter.setData(list)
-        binding.rvMain.layoutManager = GridLayoutManager(activity, 3)
-        binding.rvMain.adapter = adapter
-    }
-
-    override fun onClicked(HomeItem: HomeItem) {
-        when (HomeItem.id) {
-            1 -> findNavController().navigate(
-                R.id.tasbeehFragment
-            )
-            2 -> findNavController().navigate(
-                R.id.prayerFragment
-            )
-            3 -> findNavController().navigate(
-                R.id.compassFragment
-            )
-            4 -> findNavController().navigate(
-                R.id.mosqueFragment
-            )
-            5 -> findNavController().navigate(
-                R.id.mediaFragment
-            )
-            6 -> findNavController().navigate(
-                R.id.calendarFragment
-            )
-        }
-
-
-    }
 
 
 }
