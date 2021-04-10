@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var locationManager: LocationManager
-    private lateinit var locationHelper: LocationHelper
     private lateinit var locationHelper2: LocationHelper2
     private lateinit var progress: Dialog
     private lateinit var prefs: SharedPreferences
@@ -46,8 +45,6 @@ class MainActivity : AppCompatActivity() {
         val dataSource = RoomDatabase.getDatabase(this).timesByYearDao
         val factory = MainActivityViewModelFactory(dataSource)
         viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
-
-
     }
 
     override fun onResume() {
@@ -63,20 +60,8 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED){
             locationHelper2.showDialogGpsCheck()
+            locationHelper2.getLocationViaProviders()
         }
-
-        locationHelper2.getLocationViaProviders()
-
-//        locationHelper.checkLocationPermission()
-//        locationHelper.getLocationLiveData().observe(this) {
-//            Log.d(TAG, "onCreate Location: ${it.longitude}")
-//            if (it != null) {
-//                Log.d(TAG, "onCreate Location: ${it.longitude}")
-//                Log.d(TAG, "onCreate Location: ${it.latitude}")
-//                progress.dismiss()
-//                viewModel.timeInitializer(it)
-//            }
-//        }
     }
 
     private fun showProgress() {
@@ -92,26 +77,6 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == LOCATION_REQ_CODE) {
-//            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                locationHelper.hasLocationPermission = true
-////                locationHelper.showDialogForPermission()
-//            } else if (grantResults[0] != PackageManager.PERMISSION_DENIED) {
-//                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-//                    val showRational = shouldShowRequestPermissionRationale(permissions[0])
-//                    if (showRational) {
-//                        locationHelper.showDialogForPermission()
-//                    } else {
-//                        locationHelper.showDialogForSettings()
-//                    }
-//                } else {
-//                    locationHelper.checkLocationPermission()
-//                }
-//            } else {
-//                locationHelper.showDialogForPermission()
-//            }
-//        }
-
         if (requestCode == LOCATION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationHelper2.hasPermission = true
@@ -123,6 +88,7 @@ class MainActivity : AppCompatActivity() {
                         locationHelper2.showDialogSecondTime()
                     } else {
                         locationHelper2.showDialogThirdTime()
+                        //here has some problems
                     }
                 }
             }
@@ -133,6 +99,4 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         locationHelper2.dialogDismiss()
     }
-
-
 }

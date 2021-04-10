@@ -32,33 +32,6 @@ class LocationHelper2(private val activity: Activity) {
     private var location: Location? = null
     private val locationObservable = MutableLiveData<Location>()
 
-    private val locationListener: LocationListener = object : LocationListener {
-        override fun onLocationChanged(locationResult: Location) {
-            Log.d(TAG, "before location check: ${locationResult.latitude}")
-            Log.d(TAG, "before location check: ${location?.latitude}")
-            if (location != null) {
-                val distance = locationResult.distanceTo(location)
-                Log.d(TAG, "location is not null onLocationChanged: ${locationResult.latitude}")
-                if (distance > 50000) {
-                    location = locationResult
-                    locationObservable.value = locationResult
-                    savePrefs()
-                }
-            } else {
-                Log.d(TAG, "location is null onLocationChanged: ${locationResult.latitude}")
-                location = locationResult
-                locationObservable.value = locationResult
-                Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
-                savePrefs()
-            }
-        }
-
-        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-        override fun onProviderEnabled(provider: String) {}
-        override fun onProviderDisabled(provider: String) {}
-    }
-
-
     companion object {
         private var INSTANCE: LocationHelper2? = null
         fun getInstance(activity: Activity): LocationHelper2 {
@@ -97,12 +70,36 @@ class LocationHelper2(private val activity: Activity) {
             Log.d(TAG, "initialize: $FINISH_FLAG")
             showDialogFirstTime()
         }
-
 //        else{
 //            getLocationViaProviders()
 //        }
     }
 
+    private val locationListener: LocationListener = object : LocationListener {
+        override fun onLocationChanged(locationResult: Location) {
+            Log.d(TAG, "before location check: ${locationResult.latitude}")
+            Log.d(TAG, "before location check: ${location?.latitude}")
+            if (location != null) {
+                val distance = locationResult.distanceTo(location)
+                Log.d(TAG, "location is not null onLocationChanged: ${locationResult.latitude}")
+                if (distance > 50000) {
+                    location = locationResult
+                    locationObservable.value = locationResult
+                    savePrefs()
+                }
+            } else {
+                Log.d(TAG, "location is null onLocationChanged: ${locationResult.latitude}")
+                location = locationResult
+                locationObservable.value = locationResult
+                Log.d(TAG, "onLocationChanged: ${locationResult.latitude}")
+                savePrefs()
+            }
+        }
+
+        override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+        override fun onProviderEnabled(provider: String) {}
+        override fun onProviderDisabled(provider: String) {}
+    }
 
     fun getLocation(): LiveData<Location> {
         return locationObservable
@@ -259,9 +256,7 @@ class LocationHelper2(private val activity: Activity) {
         } else {
             if (hasPermission) getCurrentLocation()
             else showDialogFirstTime()
-
         }
-
     }
 
     private fun savePrefs() {
@@ -272,20 +267,4 @@ class LocationHelper2(private val activity: Activity) {
             .apply()
         Log.d(TAG, "savedPref: ${location?.latitude}")
     }
-
 }
-
-//class GPSCoordinates {
-//    var longitude = -1f
-//    var latitude = -1f
-//
-//    constructor(theLatitude: Float, theLongitude: Float) {
-//        longitude = theLongitude
-//        latitude = theLatitude
-//    }
-//
-//    constructor(theLatitude: Double, theLongitude: Double) {
-//        longitude = theLongitude.toFloat()
-//        latitude = theLatitude.toFloat()
-//    }
-//}
