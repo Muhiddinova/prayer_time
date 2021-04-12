@@ -70,9 +70,6 @@ class LocationHelper2(private val activity: Activity) {
             Log.d(TAG, "initialize: $FINISH_FLAG")
             showDialogFirstTime()
         }
-//        else{
-//            getLocationViaProviders()
-//        }
     }
 
     private val locationListener: LocationListener = object : LocationListener {

@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var locationHelper2: LocationHelper2
     private lateinit var progress: Dialog
     private lateinit var prefs: SharedPreferences
-    private var location: Location? = null
+    private lateinit var location: Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,13 +62,15 @@ class MainActivity : AppCompatActivity() {
             locationHelper2.showDialogGpsCheck()
             locationHelper2.getLocationViaProviders()
         }
+        getSavedLocation()
+        Log.d(TAG, "onResume: ${location.latitude}")
+        location.let { viewModel.timeInitializer(it) }
     }
 
     private fun showProgress() {
         progress.setContentView(R.layout.progress_dialog)
         progress.setCancelable(false)
         progress.show()
-
     }
 
     override fun onRequestPermissionsResult(
@@ -98,5 +100,16 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         locationHelper2.dialogDismiss()
+    }
+
+    private fun getSavedLocation() {
+        prefs = this.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
+        location = Location("")
+        val latitudeSt = prefs.getString(LATITUDE, null)
+        val longtitudeSt = prefs.getString(LONGITUDE, null)
+        if (latitudeSt != null && longtitudeSt != null) {
+            location.latitude = latitudeSt.toDouble()
+            location.longitude = longtitudeSt.toDouble()
+        }
     }
 }

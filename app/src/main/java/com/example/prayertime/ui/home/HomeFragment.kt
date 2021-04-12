@@ -175,48 +175,6 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         Log.d(TAG, "getSavedLocation: ${location?.latitude}")
     }
 
-    private fun makeNotification() {
-        val notification = Notification(requireContext())
-
-        notification.createNotificationChannel(
-            requireContext(),
-            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            "fajr", "App notification channel."
-        )
-
-        notification.createNotificationChannel(
-            requireContext(),
-            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            "shuruq", "App notification channel."
-        )
-
-        notification.createNotificationChannel(
-            requireContext(),
-            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            "thuhr", "App notification channel."
-        )
-
-        notification.createNotificationChannel(
-            requireContext(),
-            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            "assr", "App notification channel."
-        )
-
-        notification.createNotificationChannel(
-            requireContext(),
-            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            "maghrib", "App notification channel."
-        )
-
-        notification.createNotificationChannel(
-            requireContext(),
-            NotificationManagerCompat.IMPORTANCE_DEFAULT, false,
-            "ishaa", "App notification channel."
-        )
-
-        notification.makeNotification()
-    }
-
     private fun getdate() {
         viewModel.getFirstElement()
     }
