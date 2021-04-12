@@ -35,12 +35,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.*
 
-const val LATITUDE = "latitude"
-const val LONGITUDE = "longitude"
-const val MY_PREFS = "myPrefs"
-const val LAST_LOCATION_UPDATE = "lastLocationUpdate"
-const val LOCATION_REQ_CODE = 1001
-
 
 class PrayerTimeFragment : Fragment() {
     private val TAG = "PrayerTimeFragment"

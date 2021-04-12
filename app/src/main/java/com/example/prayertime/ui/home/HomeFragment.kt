@@ -20,12 +20,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.prayertime.R
+import com.example.prayertime.constants.LATITUDE
+import com.example.prayertime.constants.LONGITUDE
+import com.example.prayertime.constants.MY_PREFS
 import com.example.prayertime.database.RoomDatabase
 import com.example.prayertime.databinding.FragmentHomeBinding
 import com.example.prayertime.helper.*
 import com.example.prayertime.model.HomeItem
 import com.example.prayertime.model.Times
-import com.google.android.youtube.player.internal.h
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.*
@@ -45,7 +47,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     private lateinit var viewModel: HomeFragmentViewModel
     private lateinit var gmt: TimeZone
     private lateinit var timeHelper: TimeHelper
-    private lateinit var locationHelper2: LocationHelper2
+    private lateinit var locationHelper: LocationHelper
     private lateinit var prefs: SharedPreferences
     private lateinit var locationManager: LocationManager
 
@@ -59,7 +61,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
         val factory = HomeFragmentViewModelFactory(dataSource)
         viewModel =
             ViewModelProviders.of(requireActivity(), factory).get(HomeFragmentViewModel::class.java)
-        locationHelper2 = LocationHelper2(requireActivity())
+        locationHelper = LocationHelper(requireActivity())
         gmt = TimeZone.getDefault()
         mChronometer = binding.chronometer
         mChronometer.base = SystemClock.elapsedRealtime()
@@ -160,7 +162,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
             Thread.sleep(1000)
             if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) flag = true
         }
-        locationHelper2.getLocationViaProviders()
+        locationHelper.getLocationViaProviders()
         getSavedLocation()
 
     }
@@ -218,7 +220,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
     }
 
     private fun getdate() {
-        viewModel.getFirstElement()
+//        viewModel.getFirstElement()
     }
 
     private fun setCalendarTime(time: Times){

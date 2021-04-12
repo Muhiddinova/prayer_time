@@ -1,7 +1,7 @@
 package com.example.prayertime.ui.mainActivity
 
+import android.location.Location
 import androidx.lifecycle.ViewModel
-import com.azan.astrologicalCalc.Location
 import com.example.prayertime.database.TimesByYearDao
 import com.example.prayertime.helper.TimeHelper
 import kotlinx.coroutines.Dispatchers
@@ -13,13 +13,11 @@ class MainActivityViewModel(private val dataSource: TimesByYearDao) :
     ViewModel() {
 
     private lateinit var timeHelper: TimeHelper
-    private lateinit var astroLocation: Location
     private lateinit var gmt: TimeZone
 
-    fun timeInitializer(location: android.location.Location) {
+    fun timeInitializer(location: Location) {
         gmt = TimeZone.getDefault()
-        astroLocation = Location(location.latitude, location.longitude, gmt.rawOffset/3600000.toDouble(), 0)
-        timeHelper = TimeHelper(astroLocation, dataSource)
+        timeHelper = TimeHelper(location)
         runBlocking {
             withContext(Dispatchers.IO) {
                 timeHelper.prayerTime()

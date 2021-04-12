@@ -2,13 +2,11 @@ package com.example.prayertime.ui.mainActivity
 
 import android.Manifest
 import android.app.Dialog
-import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
@@ -16,10 +14,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.prayertime.R
+import com.example.prayertime.constants.LOCATION_REQ_CODE
 import com.example.prayertime.database.RoomDatabase
 import com.example.prayertime.databinding.ActivityMainBinding
 import com.example.prayertime.helper.*
-import com.example.prayertime.ui.prayerTime.LOCATION_REQ_CODE
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var locationManager: LocationManager
-    private lateinit var locationHelper2: LocationHelper2
+    private lateinit var locationHelper: LocationHelper
     private lateinit var progress: Dialog
     private lateinit var prefs: SharedPreferences
     private var location: Location? = null
@@ -38,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         val navHost =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        locationHelper2 = LocationHelper2.getInstance(this)
+        locationHelper = LocationHelper(this)
         navController = navHost.navController
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         progress = Dialog(this)
@@ -54,13 +52,13 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && (FINISH_FLAG == 1)
         ) {
-            locationHelper2.showDialogSecondTime()
+            locationHelper.showDialogSecondTime()
         }else if(ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED){
-            locationHelper2.showDialogGpsCheck()
-            locationHelper2.getLocationViaProviders()
+            locationHelper.showDialogGpsCheck()
+            locationHelper.getLocationViaProviders()
         }
     }
 
@@ -68,7 +66,6 @@ class MainActivity : AppCompatActivity() {
         progress.setContentView(R.layout.progress_dialog)
         progress.setCancelable(false)
         progress.show()
-
     }
 
     override fun onRequestPermissionsResult(
@@ -79,15 +76,15 @@ class MainActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == LOCATION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                locationHelper2.hasPermission = true
-                locationHelper2.getCurrentLocation()
+                locationHelper.hasPermission = true
+                locationHelper.getCurrentLocation()
             } else if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     val showRational = shouldShowRequestPermissionRationale(permissions[0])
                     if (showRational) {
-                        locationHelper2.showDialogSecondTime()
+                        locationHelper.showDialogSecondTime()
                     } else {
-                        locationHelper2.showDialogThirdTime()
+                        locationHelper.showDialogThirdTime()
                         //here has some problems
                     }
                 }
@@ -97,6 +94,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        locationHelper2.dialogDismiss()
+        locationHelper.dialogDismiss()
     }
 }
