@@ -8,6 +8,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.prayertime.R
 
+
 class Notification(private val context: Context) {
 
     fun makeNotification() {

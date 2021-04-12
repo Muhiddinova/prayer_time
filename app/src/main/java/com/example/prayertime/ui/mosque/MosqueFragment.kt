@@ -2,12 +2,7 @@ package com.example.prayertime.ui.mosque
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -44,6 +39,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Suppress("CAST_NEVER_SUCCEEDS")

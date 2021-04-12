@@ -40,25 +40,46 @@ class Tasbih @JvmOverloads constructor(
             R.drawable.tasbih
         )?.toBitmap()
         mListYPos = arrayListOf(
-            -36 * dp,
-            -28 * dp,
-            4 * dp,
-            12 * dp,
-            56 * dp,
-            64 * dp,
-            120 * dp,
-            128 * dp,
-            196 * dp,
-            204 * dp,
-            284 * dp,
-            292 * dp,
-            360 * dp,
-            368 * dp,
-            424 * dp,
-            432 * dp,
-            476 * dp,
-            484 * dp,
-            516 * dp
+            0 * dp,
+            8 * dp,
+            40 * dp,
+            48 * dp,
+            92 * dp,
+            100 * dp,
+            156 * dp,
+            164 * dp,
+            232 * dp,
+            240 * dp,
+            320 * dp,
+            328 * dp,
+            396 * dp,
+            404 * dp,
+            460 * dp,
+            468 * dp,
+            512 * dp,
+            520 * dp,
+            552 * dp
+
+
+//            -36 * dp, //4+4
+//            -28 * dp, //4+28  +12
+//            4 * dp, //4+4
+//            12 * dp, //4+40
+//            56 * dp,
+//            64 * dp,
+//            120 * dp,
+//            128 * dp,
+//            196 * dp,
+//            204 * dp,
+//            284 * dp,
+//            292 * dp,
+//            360 * dp,
+//            368 * dp,
+//            424 * dp,
+//            432 * dp,
+//            476 * dp,
+//            484 * dp,
+//            516 * dp
         )
         mListSizes = arrayListOf(
             (4 * dp).toInt(),
@@ -101,7 +122,7 @@ class Tasbih @JvmOverloads constructor(
 
 
     fun startAnimation() {
-        mValueAnimator.duration = 500
+        mValueAnimator.duration = 1000
         mValueAnimator.interpolator = AccelerateDecelerateInterpolator()
         mValueAnimator.addUpdateListener(this)
         mIsAnimationStart = true
@@ -117,11 +138,11 @@ class Tasbih @JvmOverloads constructor(
                 val size =
                     (mListSizes[i + 1] - mListSizes[i - 1]) * mAnimatedValue / 100 + mListSizes[i - 1]
                 when (i) {
-                    16 -> {
-                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
-                    }
                     2 -> {
                         sPaint.alpha = 255 * mAnimatedValue / 100
+                    }
+                    16 -> {
+                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
                     }
                     else -> sPaint.alpha = 255
                 }
@@ -136,10 +157,16 @@ class Tasbih @JvmOverloads constructor(
                 }
 
             } else {
-                if (i == 17)
-                    sPaint.alpha = 255 - 255 * mAnimatedValue / 100
-                else
-                    sPaint.alpha = 255
+                when (i) {
+                    1 -> {
+                        sPaint.alpha = 255 * mAnimatedValue / 100
+                    }
+                    17 -> {
+                        sPaint.alpha = 255 - 255 * mAnimatedValue / 100
+                    }
+                    else -> sPaint.alpha = 255
+                }
+
                 getBitmap(mListSizes[i - 1])?.let {
                     canvas?.drawBitmap(
                         it,
@@ -157,7 +184,7 @@ class Tasbih @JvmOverloads constructor(
 
 
     private fun drawCircle(canvas: Canvas?) {
-        (1..17).forEach { i ->
+        (3..17).forEach { i ->
             getBitmap(mListSizes[i - 1])?.let {
                 canvas?.drawBitmap(
                     it,
@@ -178,6 +205,27 @@ class Tasbih @JvmOverloads constructor(
             null
         }
     }
+
+
+//    -36 * dp,
+//    -28 * dp,
+//    4 * dp,
+//    12 * dp,
+//    56 * dp,
+//    64 * dp,
+//    120 * dp,
+//    128 * dp,
+//    196 * dp,
+//    204 * dp,
+//    284 * dp,
+//    292 * dp,
+//    360 * dp,
+//    368 * dp,
+//    424 * dp,
+//    432 * dp,
+//    476 * dp,
+//    484 * dp,
+//    516 * dp
 
 
 }

@@ -1,18 +1,10 @@
-package com.example.prayertime.mainActivity
+package com.example.prayertime.ui.mainActivity
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.azan.astrologicalCalc.Location
 import com.example.prayertime.database.TimesByYearDao
-import com.example.prayertime.helper.LocationHelper
 import com.example.prayertime.helper.TimeHelper
-import com.example.prayertime.model.Times
-import com.example.prayertime.repository.TimesRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.util.*
