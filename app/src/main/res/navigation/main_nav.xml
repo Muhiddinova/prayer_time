@@ -55,20 +55,20 @@
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/mediaFragment"
-        android:name="com.example.prayertime.ui.audio.MediaFragment"
+        android:name="com.example.prayertime.ui.media.MediaFragment"
         android:label="MediaFragment"
         tools:layout="@layout/fragment_media" />
     <fragment
         android:id="@+id/audioFragment"
-        android:name="com.example.prayertime.ui.audio.AudioFragment"
+        android:name="com.example.prayertime.ui.media.AudioFragment"
         android:label="AudioFragment" />
     <fragment
         android:id="@+id/radioFragment2"
-        android:name="com.example.prayertime.ui.audio.RadioFragment"
+        android:name="com.example.prayertime.ui.media.RadioFragment"
         android:label="RadioFragment" />
     <fragment
         android:id="@+id/youTubeFragment"
-        android:name="com.example.prayertime.ui.audio.YouTubeFragment"
+        android:name="com.example.prayertime.ui.media.YouTubeFragment"
         android:label="YouTubeFragment" />
 
 
