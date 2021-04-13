@@ -52,6 +52,7 @@ class LocationHelper2(private val activity: Activity) {
             activity,
             Manifest.permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED)
+
         prefs = activity.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
         locationManager =
             (activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager?)!!

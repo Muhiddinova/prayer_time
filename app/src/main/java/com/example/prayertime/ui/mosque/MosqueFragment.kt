@@ -62,7 +62,7 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     private lateinit var observable: Observable<Place>
     private val url: String? = null
     private lateinit var prefs: SharedPreferences
-    private var location: Location? = null
+    private lateinit var location: Location
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -430,6 +430,7 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
 
     private fun getSavedLocation() {
         prefs = activity?.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)!!
+        location = Location("")
         val latitudeSt = prefs.getString(LATITUDE, null)
         val longtitudeSt = prefs.getString(LONGITUDE, null)
         if (latitudeSt != null && longtitudeSt != null) {
@@ -440,6 +441,7 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
         }else{
             Toast.makeText(requireContext(), "location is null", Toast.LENGTH_SHORT).show()
         }
+        Log.d(TAG, "getSavedLocation: jnjkbnkjn")
     }
 
 
