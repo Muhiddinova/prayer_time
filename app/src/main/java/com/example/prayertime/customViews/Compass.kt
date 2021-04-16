@@ -32,14 +32,14 @@ class Compass @JvmOverloads constructor(
     init {
         mBitmap = ContextCompat.getDrawable(
             context,
-            R.drawable.ic_compass
+            R.drawable.ic_bg5
         )?.toBitmap()
     }
 
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        drawCircle(canvas)
+//        drawCircle(canvas)
     }
 
 
@@ -50,7 +50,7 @@ class Compass @JvmOverloads constructor(
 
 
     fun startAnimation() {
-        mValueAnimator.duration = 500
+        mValueAnimator.duration = 10
         mValueAnimator.interpolator = AccelerateDecelerateInterpolator()
         mValueAnimator.addUpdateListener(this)
         mIsAnimationStart = true
@@ -66,11 +66,11 @@ class Compass @JvmOverloads constructor(
 
 
     private fun drawCircle(canvas: Canvas?) {
-        getBitmap(100)?.let {
+        getBitmap(200*dp.toInt())?.let {
             canvas?.drawBitmap(
                 it,
-                (measuredWidth / 2 - 50f),
-                (measuredHeight / 2 - 370f),
+                (measuredWidth/2f - measuredWidth/4f),
+                (measuredHeight/2f - measuredHeight/4f),
                 sPaint
             )
         }
