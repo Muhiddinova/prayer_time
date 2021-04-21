@@ -1,6 +1,7 @@
 package com.example.prayertime.notification
 
 import android.app.*
+import android.app.Notification
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -117,7 +118,6 @@ class AlarmReceiver() : BroadcastReceiver() {
             val bundle = Bundle()
             bundle.putLong(ALARM_KEY, time)
             intent.putExtra(BUNDLE_EXTRA, bundle)
-
             val pIntent = PendingIntent.getBroadcast(
                 context,
                 NOTIFICATION_ID,
@@ -174,7 +174,6 @@ class AlarmReceiver() : BroadcastReceiver() {
             }
         }
     }
-
 
 }
 

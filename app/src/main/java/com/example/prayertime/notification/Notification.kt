@@ -1,4 +1,4 @@
-package com.example.prayertime.helper
+package com.example.prayertime.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -9,6 +9,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.prayertime.R
 
 
+// TODO - should make more optimize Notification class
 class Notification(private val context: Context) {
 
     fun makeNotification() {

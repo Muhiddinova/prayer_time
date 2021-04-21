@@ -1,24 +1,19 @@
 package com.example.prayertime.ui.prayerTime
 
+import android.location.Location
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.prayertime.database.TimesByYearDao
+//import com.example.prayertime.database.TimesByYearDao
+import com.example.prayertime.helper.TimeHelper
 import com.example.prayertime.model.Times
-import com.example.prayertime.repository.TimesRepository
+//import com.example.prayertime.repository.TimesRepository
 
-class PrayerTimeViewModel(dataSource: TimesByYearDao) : ViewModel() {
+class PrayerTimeViewModel() : ViewModel() {
 
-    private val timesRepository = TimesRepository(dataSource)
+//    private val timesRepository = TimesRepository(dataSource)
 
-    fun getDate(date: String): Times {
-        return timesRepository.getTime(date)
+    fun getDate(location:Location): Times {
+        return TimeHelper(location).getAllTimes()
     }
 
-    fun getFirstElement(): Times{
-        return timesRepository.getFirstElement()
-    }
-
-    fun getSecondElement(): Times{
-        return  timesRepository.getSecondElement()
-    }
 }

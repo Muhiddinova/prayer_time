@@ -1,6 +1,7 @@
 package com.example.prayertime.helper
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
@@ -24,6 +25,8 @@ import kotlin.system.exitProcess
 
 var FINISH_FLAG = 0
 
+
+// TODO - Should do make more optimize LocationHelper.kt. Bacause of, every open the application ask turn on gps, although we have last location.
 class LocationHelper(private val activity: Activity) {
 
 
@@ -39,20 +42,6 @@ class LocationHelper(private val activity: Activity) {
     init {
         initialize()
     }
-
-//    companion object {
-//        private var INSTANCE: LocationHelper2? = null
-//        fun getInstance(activity: Activity): LocationHelper2 {
-//            if (INSTANCE != null) {
-//                Log.d("LocationHelper2", "getInstance: already have")
-//                return INSTANCE!!
-//            }
-//            Log.d("LocationHelper2", "getInstance: initialize")
-//            INSTANCE = LocationHelper2(activity)
-//            INSTANCE!!.initialize()
-//            return INSTANCE!!
-//        }
-//    }
 
     private fun initialize() {
         Log.d(TAG, "initialize: working")
@@ -86,7 +75,6 @@ class LocationHelper(private val activity: Activity) {
     private val locationListener: LocationListener = object : LocationListener {
         override fun onLocationChanged(locationResult: Location) {
             Log.d(TAG, "before location check: ${locationResult.latitude}")
-            Log.d(TAG, "before location check: ${location?.latitude}")
             if (location != null) {
                 val distance = locationResult.distanceTo(location)
                 Log.d(TAG, "location is not null onLocationChanged: ${locationResult.latitude}")
@@ -193,6 +181,7 @@ class LocationHelper(private val activity: Activity) {
         dialog.show()
     }
 
+    @SuppressLint("MissingPermission")
     fun showDialogGpsCheck() {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             if (this::dialog.isInitialized) dialog.dismiss()
@@ -224,6 +213,7 @@ class LocationHelper(private val activity: Activity) {
         }
     }
 
+    @SuppressLint("MissingPermission")
     fun getCurrentLocation() {
         if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             Log.d(TAG, "getCurrentLocation: network available")
@@ -243,6 +233,7 @@ class LocationHelper(private val activity: Activity) {
             dialog.dismiss()
     }
 
+    @SuppressLint("MissingPermission")
     fun getLocationViaProviders() {
         prefs = activity.getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
         locationManager =

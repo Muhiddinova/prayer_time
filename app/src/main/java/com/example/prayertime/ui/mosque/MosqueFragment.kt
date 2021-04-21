@@ -22,11 +22,10 @@ import com.directions.route.RouteException
 import com.directions.route.Routing
 import com.directions.route.RoutingListener
 import com.example.prayertime.R
+import com.example.prayertime.constants.LATITUDE
+import com.example.prayertime.constants.LONGITUDE
+import com.example.prayertime.constants.MY_PREFS
 import com.example.prayertime.databinding.FragmentMosqueBinding
-import com.example.prayertime.ui.prayerTime.LATITUDE
-import com.example.prayertime.ui.prayerTime.LONGITUDE
-import com.example.prayertime.ui.prayerTime.MY_PREFS
-import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapsInitializer
@@ -55,12 +54,8 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
     private var sIsPermissionGranted = false
     private var mLocation: Location? = null
     private lateinit var mPlacesClient: PlacesClient
-    private var mLastLocation: Location? = null
     private var mCurrLocationMarker: Marker? = null
-    private var mLocationRequest: LocationRequest? = null
     private val PROXIMITY_RADIUS = 5000
-    private lateinit var observable: Observable<Place>
-    private val url: String? = null
     private lateinit var prefs: SharedPreferences
     private var location: Location? = null
 
@@ -92,14 +87,14 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
                 Log.d("onClick", "Button is Clicked")
                 mMap.clear()
                 val url = location?.let { getUrl(it.latitude, it.longitude, Mosque) }
-                val DataTransfer = arrayOfNulls<Any>(2)
-                DataTransfer[0] = mMap
-                DataTransfer[1] = url
+                val dataTransfer = arrayOfNulls<Any>(2)
+                dataTransfer[0] = mMap
+                dataTransfer[1] = url
                 if (url != null) {
                     Log.d(TAG, "url: $url")
                 }
 
-                getNearbyPlaceData(DataTransfer)
+                getNearbyPlaceData(dataTransfer)
                 Log.d(TAG, "onCreateView: ")
                 Toast.makeText(requireContext(), "Nearby Mosques", Toast.LENGTH_LONG).show()
             }

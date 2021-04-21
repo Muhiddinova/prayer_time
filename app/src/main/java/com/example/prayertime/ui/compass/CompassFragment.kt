@@ -22,21 +22,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.prayertime.R
+import com.example.prayertime.constants.LATITUDE
+import com.example.prayertime.constants.LONGITUDE
+import com.example.prayertime.constants.MY_PREFS
 import com.example.prayertime.databinding.FragmentCompassBinding
 import com.example.prayertime.helper.LocationHelper
-import com.example.prayertime.ui.prayerTime.LATITUDE
-import com.example.prayertime.ui.prayerTime.LONGITUDE
-import com.example.prayertime.ui.prayerTime.MY_PREFS
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-//const val LATITUDE = "latitude"
-//const val LONGITUDE = "longitude"
-//const val MY_PREFS = "myPrefs"
-//const val LAST_LOCATION_UPDATE = "lastLocationUpdate"
-//const val LOCATION_REQ_CODE = 1001
 
 class CompassFragment : Fragment(), SensorEventListener {
 
@@ -174,7 +169,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                 Log.d(TAG, "getSavedLocation: ${location.latitude}")
             }
         }
-        Log.d(TAG, "getSavedLocation: ${location.latitude}")
     }
 
     private fun getDegree(): Double {

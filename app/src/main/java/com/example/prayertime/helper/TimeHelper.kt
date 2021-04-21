@@ -1,6 +1,7 @@
 package com.example.prayertime.helper
 
 import android.location.Location
+import android.util.Log
 import com.azan.Azan
 import com.azan.Madhhab
 import com.azan.Method
@@ -11,7 +12,6 @@ import java.util.*
 
 class TimeHelper(private val location: Location) {
 
-    private val TAG = "GettingTime"
     private var times = arrayOf<Time>()
     private val mCalendar = Calendar.getInstance()
     private lateinit var simpleDate: SimpleDate
@@ -23,7 +23,7 @@ class TimeHelper(private val location: Location) {
     }
 
 
-    fun prayerTime() {
+    private fun prayerTime() {
 
         getSimpleDate()
 
@@ -51,8 +51,9 @@ class TimeHelper(private val location: Location) {
 
     private fun getSimpleDate() {
         val day = mCalendar.get(Calendar.DAY_OF_MONTH)
-        val month = mCalendar.get(Calendar.MONTH)
+        val month = mCalendar.get(Calendar.MONTH) + 1
         val year = mCalendar.get(Calendar.YEAR)
+        Log.d("------------", "getSimpleDate: $day $month $year")
         simpleDate = SimpleDate(day, month, year)
     }
 
@@ -65,11 +66,19 @@ class TimeHelper(private val location: Location) {
         (times.indices).forEach loop@{
             if (it == 1) return@loop
             cal.set(year, month, day, times[it].hour, times[it].minute)
+            Log.d(
+                "------------",
+                "getAlarmTime: ${cal.get(Calendar.DAY_OF_MONTH)}  ${cal.get(Calendar.HOUR_OF_DAY)} ${
+                    cal.get(Calendar.MINUTE)
+                }"
+            )
             if (cal.timeInMillis > now) return cal.timeInMillis
         }
         cal
             .set(year, month, day, times[5].hour, times[5].minute)
+
         return cal.timeInMillis
+
     }
 
     fun getAllTimes(): Times {

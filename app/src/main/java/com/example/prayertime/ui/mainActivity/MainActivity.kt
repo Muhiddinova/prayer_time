@@ -15,7 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.prayertime.R
 import com.example.prayertime.constants.LOCATION_REQ_CODE
-import com.example.prayertime.database.RoomDatabase
+//import com.example.prayertime.database.RoomDatabase
 import com.example.prayertime.databinding.ActivityMainBinding
 import com.example.prayertime.helper.*
 
@@ -40,9 +40,9 @@ class MainActivity : AppCompatActivity() {
         navController = navHost.navController
         locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
         progress = Dialog(this)
-        val dataSource = RoomDatabase.getDatabase(this).timesByYearDao
-        val factory = MainActivityViewModelFactory(dataSource)
-        viewModel = ViewModelProviders.of(this, factory).get(MainActivityViewModel::class.java)
+//        val dataSource = RoomDatabase.getDatabase(this).timesByYearDao
+//        val factory = MainActivityViewModelFactory(dataSource)
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java)
     }
 
     override fun onResume() {
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED){
-            locationHelper.showDialogGpsCheck()
+//            locationHelper.showDialogGpsCheck()
             locationHelper.getLocationViaProviders()
         }
     }
