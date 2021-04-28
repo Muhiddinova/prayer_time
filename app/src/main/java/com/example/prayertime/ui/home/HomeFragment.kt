@@ -25,7 +25,6 @@ import com.example.prayertime.databinding.FragmentHomeBinding
 import com.example.prayertime.helper.*
 import com.example.prayertime.model.HomeItem
 import com.example.prayertime.model.Times
-import com.google.android.youtube.player.internal.h
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.Calendar.*
@@ -79,7 +78,7 @@ class HomeFragment : Fragment(), AdapterHome.RvItemListener {
                 R.id.tasbeehFragment
             )
             2 -> findNavController().navigate(
-                R.id.prayerFragment
+                R.id.prayerNameFragment
             )
             3 -> findNavController().navigate(
                 R.id.compassFragment

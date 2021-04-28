@@ -1,23 +1,26 @@
 package com.example.prayertime.ui.prayer
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.example.prayertime.PRAYER_ID
 import com.example.prayertime.R
+import com.example.prayertime.TITLE_ID
 import com.example.prayertime.databinding.FragmentPrayerBinding
-import com.example.prayertime.ui.home.AdapterHome
-import com.example.prayertime.model.HomeItem
+import com.example.prayertime.databinding.ItemPrayerBinding
+import com.example.prayertime.model.PrayerText
+import com.google.gson.Gson
 
-class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
-
+class PrayerFragment : Fragment(), AdapterPrayer.RvItemListener {
     private lateinit var binding: FragmentPrayerBinding
-    private lateinit var viewModel: PrayerViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,85 +32,79 @@ class PrayerFragment : Fragment(), AdapterHome.RvItemListener {
     }
 
     private fun setRv() {
-        val list = getList()
-        val adapter=AdapterHome(this)
-        adapter.setData(list)
-        binding.rvPrayer.layoutManager=GridLayoutManager(activity,3)
-        binding.rvPrayer.adapter=adapter
+
+        val oldList = Prayer().getList()
+        val newList = separateListByTitleId(oldList)
+        val adapter = AdapterPrayer(this)
+        adapter.setData(oldList)
+        binding.rvPrayerName.adapter = adapter
     }
 
-    private fun getList(): List<HomeItem> {
-        return listOf(
-            HomeItem(
-                1,
-                "Hammasi",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!
-            ),
-            HomeItem(1,
-                "Tonggi va kechki ",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Namozdagi duo...",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Uy va oilada",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Qiyinchilik kel...",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Kasal bo'lganda",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Tabiat",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Xaj va Umra",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Sayohat",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Sahobalarning duo...",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
-            HomeItem(1,
-                "Boshqalar",
-                requireContext().let {
-                    ContextCompat.getDrawable(it, R.drawable.ic_prayer_beads)
-                }!!),
+    private fun separateListByTitleId(list: List<PrayerText>) {
+
+        val changedList = arrayListOf<PrayerText>()
+        val _t = arguments?.getInt(TITLE_ID)
+        for (i in list.indices) {
+
+            if (list[i].titleId == _t){
 
 
+            }
+
+        }
+    }
+
+
+    override fun onClicked(prayerText: PrayerText) {
+
+        val jsonString = Gson().toJson(prayerText)
+        findNavController().navigate(
+                R.id.prayerList, bundleOf(PRAYER_ID to jsonString)
             )
     }
+}
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(PrayerViewModel::class.java)
-        // TODO: Use the ViewModel
+
+class AdapterPrayer(private val listener: RvItemListener) :
+    RecyclerView.Adapter<AdapterPrayer.VH>() {
+
+    interface RvItemListener {
+        fun onClicked(prayerText: PrayerText)
     }
 
-    override fun onClicked(HomeItem: HomeItem) {
-        TODO("Not yet implemented")
+    private var list = listOf<PrayerText>()
+
+    fun setData(list: List<PrayerText>) {
+        this.list = list
+        notifyDataSetChanged()
     }
 
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdapterPrayer.VH {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding: ItemPrayerBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.item_prayer,
+            parent,
+            false
+        )
+        return VH(binding, parent.context)
+    }
+
+
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        holder.itemView.setOnClickListener {
+            listener.onClicked(list[position])
+        }
+        holder.onBind(list[position])
+    }
+
+    override fun getItemCount(): Int = list.size
+
+    class VH(private val binding: ItemPrayerBinding, private val context: Context?) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun onBind(prayerText: PrayerText) {
+            binding.prayerName = prayerText
+        }
+
+    }
 }

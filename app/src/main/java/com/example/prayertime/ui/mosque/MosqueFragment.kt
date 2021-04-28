@@ -2,7 +2,12 @@ package com.example.prayertime.ui.mosque
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.location.Location
 import android.os.Bundle
@@ -174,9 +179,9 @@ class MosqueFragment : Fragment(), OnMapReadyCallback, GoogleMap.OnMapClickListe
         if (requestCode == LOCATION_REQ_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 locationHelper.hasLocationPermission = true
-                locationHelper.alertDialogGpsCheck()
+//                locationHelper.alertDialogGpsCheck()
             } else {
-                locationHelper.showDialogForPermission()
+//                locationHelper.showDialogForPermission()
             }
         }
 

@@ -1,6 +1,7 @@
 package com.example.prayertime.helper
 
 import android.Manifest
+import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AlertDialog
@@ -16,7 +17,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,6 +43,7 @@ class LocationHelper(private val activity: Activity) {
 
     companion object {
 
+        @SuppressLint("StaticFieldLeak")
         private var INSTANCE: LocationHelper? = null
         fun getInstance(activity: Activity): LocationHelper {
             if (INSTANCE != null) {
@@ -69,108 +70,108 @@ class LocationHelper(private val activity: Activity) {
     fun checkLocationPermission() {
         hasLocationPermission = ActivityCompat.checkSelfPermission(
             activity,
-            Manifest.permission.ACCESS_FINE_LOCATION
+            permission.ACCESS_FINE_LOCATION
         ) == PackageManager.PERMISSION_GRANTED
 
         if (hasLocationPermission) {
-            alertDialogGpsCheck()
+//            alertDialogGpsCheck()
         } else {
             ActivityCompat.requestPermissions(
                 activity,
                 arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    permission.ACCESS_FINE_LOCATION
                 ), LOCATION_REQ_CODE
             )
         }
     }
 
-    fun showDialogForSettings() {
-        if (this::dialog.isInitialized)
-            dialog.dismiss()
-        dialog = AlertDialog.Builder(activity)
-            .setMessage("Sozlamalar bo'limiga kirib ilovani ichidan locationga ruxsat bering!")
-            .setCancelable(false)
-            .setPositiveButton(
-                "Sozlamalarni ochish"
-            ) { dialog, id ->
-                activity.startActivity(
-                    Intent(
-                        Settings.ACTION_APPLICATION_SETTINGS
-                    )
-                )
-            }
-            .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
-                activity.finishAffinity()
-            }
-            .setOnDismissListener {
-                it.dismiss()
-            }
-            .create()
-        dialog.show()
-    }
+//    fun showDialogForSettings() {
+//        if (this::dialog.isInitialized)
+//            dialog.dismiss()
+//        dialog = AlertDialog.Builder(activity)
+//            .setMessage("Sozlamalar bo'limiga kirib ilovani ichidan locationga ruxsat bering!")
+//            .setCancelable(false)
+//            .setPositiveButton(
+//                "Sozlamalarni ochish"
+//            ) { dialog, id ->
+//                activity.startActivity(
+//                    Intent(
+//                        Settings.ACTION_APPLICATION_SETTINGS
+//                    )
+//                )
+//            }
+//            .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
+//                activity.finishAffinity()
+//            }
+//            .setOnDismissListener {
+//                it.dismiss()
+//            }
+//            .create()
+//        dialog.show()
+//    }
 
-    private fun alertDialogGpsCheck() {
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            if (location == null){
-                if (this::dialog.isInitialized) dialog.dismiss()
-                dialog = AlertDialog.Builder(activity)
-                    .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
-                    .setCancelable(false)
-                    .setPositiveButton(
-                        "Sozlamalarni ochish"
-                    ) { _, _ ->
-                        activity.startActivity(
-                            Intent(
-                                Settings.ACTION_LOCATION_SOURCE_SETTINGS
-                            )
-                        )
-                    }
-                    .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
-                        activity.finishAffinity()
-                    }
-                    .setOnDismissListener {
-                        it.dismiss()
-                    }
-                    .show()
-            }
-        } else {
-            getLocation()
-        }
-
-    }
-
-    fun showDialogForPermission() {
-        if (this::dialog.isInitialized) {
-            Log.d(TAG, "showDialogForPermission: dismiss")
-            dialog.dismiss()
-        }
-
-        dialog = AlertDialog.Builder(activity)
-            .setMessage("Joylashuvingizni aniqlashimiz uchun ruxsat bering. Busiz ilova ishlamaydi!")
-            .setCancelable(false)
-            .setPositiveButton(
-                "Ruxsat berish"
-            ) { _, _ ->
-                ActivityCompat.requestPermissions(
-                    activity,
-                    permission,
-                    LOCATION_REQ_CODE
-                )
-            }
-            .setNegativeButton("Bekor qilish") { _: DialogInterface, _: Int ->
-                activity.finishAffinity()
-            }
-            .setOnDismissListener {
-                it.dismiss()
-            }
-            .create()
-        dialog.show()
-    }
-
-    fun dialogDismiss() {
-        if (this::dialog.isInitialized)
-            dialog.dismiss()
-    }
+// fun alertDialogGpsCheck() {
+//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//            if (location == null){
+//                if (this::dialog.isInitialized) dialog.dismiss()
+//                dialog = AlertDialog.Builder(activity)
+//                    .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
+//                    .setCancelable(false)
+//                    .setPositiveButton(
+//                        "Sozlamalarni ochish"
+//                    ) { _, _ ->
+//                        activity.startActivity(
+//                            Intent(
+//                                Settings.ACTION_LOCATION_SOURCE_SETTINGS
+//                            )
+//                        )
+//                    }
+//                    .setNegativeButton("Qolish") { _: DialogInterface, _: Int ->
+//                        activity.finishAffinity()
+//                    }
+//                    .setOnDismissListener {
+//                        it.dismiss()
+//                    }
+//                    .show()
+//            }
+//        } else {
+//            getLocation()
+//        }
+//
+//    }
+//
+//    fun showDialogForPermission() {
+//        if (this::dialog.isInitialized) {
+//            Log.d(TAG, "showDialogForPermission: dismiss")
+//            dialog.dismiss()
+//        }
+//
+//        dialog = AlertDialog.Builder(activity)
+//            .setMessage("Joylashuvingizni aniqlashimiz uchun ruxsat bering. Busiz ilova ishlamaydi!")
+//            .setCancelable(false)
+//            .setPositiveButton(
+//                "Ruxsat berish"
+//            ) { _, _ ->
+//                ActivityCompat.requestPermissions(
+//                    activity,
+//                    permission,
+//                    LOCATION_REQ_CODE
+//                )
+//            }
+//            .setNegativeButton("Bekor qilish") { _: DialogInterface, _: Int ->
+//                activity.finishAffinity()
+//            }
+//            .setOnDismissListener {
+//                it.dismiss()
+//            }
+//            .create()
+//        dialog.show()
+//    }
+//
+//    fun dialogDismiss() {
+//        if (this::dialog.isInitialized)
+//            dialog.dismiss()
+//    }
 
 
     @SuppressLint("MissingPermission")

@@ -37,10 +37,10 @@
         android:label="kaba_online_fragment"
         tools:layout="@layout/fragment_mosque" />
     <fragment
-        android:id="@+id/prayerFragment"
-        android:name="com.example.prayertime.ui.prayer.PrayerFragment"
+        android:id="@+id/prayerNameFragment"
+        android:name="com.example.prayertime.ui.prayer.PrayerNameFragment"
         android:label="prayer_fragment"
-        tools:layout="@layout/fragment_prayer" />
+        tools:layout="@layout/fragment_prayer_name" />
     <fragment
         android:id="@+id/prayerTimeFragment"
         android:name="com.example.prayertime.ui.prayerTime.PrayerTimeFragment"
@@ -69,6 +69,15 @@
         android:id="@+id/youTubeFragment"
         android:name="com.example.prayertime.ui.media.YouTubeFragment"
         android:label="YouTubeFragment" />
+    <fragment
+        android:id="@+id/prayerFragment"
+        android:name="com.example.prayertime.ui.prayer.PrayerFragment"
+        android:label="PrayerFragment"
+        tools:layout="@layout/fragment_prayer"/>
+    <fragment
+        android:id="@+id/prayerList"
+        android:name="com.example.prayertime.ui.prayer.PrayerList"
+        android:label="PrayerList" />
 
 
 </navigation>
