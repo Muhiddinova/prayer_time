@@ -1,4 +1,4 @@
-package com.example.prayertime.ui.audio
+package com.example.prayertime.ui.media
 
 import android.os.Bundle
 import android.view.LayoutInflater

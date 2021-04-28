@@ -6,7 +6,13 @@
     <string name="bomdod">Bomdod</string>
     <string name="zuhr">Zuhr</string>
     <string name="_12_42">12:42</string>
-    <string name="gregorian">Gregorian</string>
+    <string name="gregorian">Абу Довуднинг ривоятларида:
+
+سُبْحَانَ اللهِ العَظِيمِ وَبِحَمْدِه                          ِ
+
+«Субҳаналлоҳил ъазийм ва биҳамдиҳи», деб келган.
+</string>
     <string name="hijri">Hijri</string>
     <string name="_00_00">00:00</string>
+    <string name="mosque">Mosque</string>
 </resources>

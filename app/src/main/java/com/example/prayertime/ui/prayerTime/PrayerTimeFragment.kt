@@ -29,6 +29,7 @@ class PrayerTimeFragment : Fragment() {
     private lateinit var locHelper: LocationHelper
     private lateinit var prefs: SharedPreferences
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
