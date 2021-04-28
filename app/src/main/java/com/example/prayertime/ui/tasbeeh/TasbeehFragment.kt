@@ -1,6 +1,7 @@
 package com.example.prayertime.ui.tasbeeh
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -27,16 +28,17 @@ class TasbeehFragment : Fragment() {
         ).apply {
             gravity = Gravity.CENTER_VERTICAL
         }
-
-
-
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.imgRound.mIsAnimationStart = false
     }
 
     override fun onResume() {
         super.onResume()
         binding.root.setOnClickListener {
-
             binding.imgRound.startAnimation()
             counter++
             binding.countTasbih.text = counter.toString()

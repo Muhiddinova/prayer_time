@@ -1,54 +1,39 @@
 package com.example.prayertime.ui.compass
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.prayertime.R
+import com.example.prayertime.constants.LATITUDE
+import com.example.prayertime.constants.LONGITUDE
+import com.example.prayertime.constants.MY_PREFS
 import com.example.prayertime.databinding.FragmentCompassBinding
 import com.example.prayertime.helper.LocationHelper
-import com.example.prayertime.ui.prayerTime.LAST_LOCATION_UPDATE
 import com.example.prayertime.ui.prayerTime.LATITUDE
 import com.example.prayertime.ui.prayerTime.LONGITUDE
-import com.example.prayertime.ui.prayerTime.MY_PREFS
-import com.google.android.gms.location.LocationServices
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-//const val LATITUDE = "latitude"
-//const val LONGITUDE = "longitude"
-//const val MY_PREFS = "myPrefs"
-//const val LAST_LOCATION_UPDATE = "lastLocationUpdate"
-//const val LOCATION_REQ_CODE = 1001
 
 class CompassFragment : Fragment(), SensorEventListener {
 
@@ -62,12 +47,12 @@ class CompassFragment : Fragment(), SensorEventListener {
     private lateinit var binding: FragmentCompassBinding
     private lateinit var viewModel: CompassViewModel
     private lateinit var gmt: TimeZone
+    private lateinit var locationHelper: LocationHelper
     private var degree: Double = 0.0
     private var longtitude: Float = 0f
     private var lattitude: Float = 0f
     private var result: Double = 0.0
     private var intDegree: Int = 0
-    private lateinit var locationHelper: LocationHelper
     private lateinit var location: Location
 
     @SuppressLint("SetTextI18n")
@@ -80,8 +65,8 @@ class CompassFragment : Fragment(), SensorEventListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_compass, container, false)
         binding.imgCompass.startAnimation()
         prefs = requireContext().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
-        locationHelper = LocationHelper.getInstance(requireActivity())
         gmt = TimeZone.getDefault()
+        locationHelper = LocationHelper(requireActivity())
         sensorManager =
             (requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager?)!!
         if (sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD) == null ||
@@ -181,137 +166,12 @@ class CompassFragment : Fragment(), SensorEventListener {
             location = Location("")
             location.latitude = latitudeSt.toDouble()
             location.longitude = longtitudeSt.toDouble()
-            locationHelper.getLocationLiveData().observe(this){
+            locationHelper.getLocation().observe(this){
                 location = it
                 Log.d(TAG, "getSavedLocation: ${location.latitude}")
             }
         }
-        Log.d(TAG, "getSavedLocation: ${location.latitude}")
     }
-
-
-
-//    private fun getLocation() {
-//        Log.d("CompassFragment", "getLocation: getLocation working")
-//
-////        val mFusedLoactionProvider =
-////            LocationServices.getFusedLocationProviderClient(requireContext())
-////        if (ActivityCompat.checkSelfPermission(
-////                requireContext(),
-////                Manifest.permission.ACCESS_FINE_LOCATION
-////            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-////                requireContext(),
-////                Manifest.permission.ACCESS_COARSE_LOCATION
-////            ) != PackageManager.PERMISSION_GRANTED
-////        ) {
-////            // TODO: Consider calling
-////            //    ActivityCompat#requestPermissions
-////            // here to request the missing permissions, and then overriding
-////            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-////            //                                          int[] grantResults)
-////            // to handle the case where the user grants the permission. See the documentation
-////            // for ActivityCompat#requestPermissions for more details.
-////            return
-////        }
-////        mFusedLoactionProvider.locationAvailability
-////            .addOnSuccessListener {
-////                if (!it.isLocationAvailable) {
-////                    AlertDialog.Builder(context)
-////                        .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqing.")
-////                        .setPositiveButton(
-////                            "Sozlamalarni ochish"
-////                        ) { _, _ -> requireContext().startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-////                        .setNegativeButton("Qolish", null)
-////                        .setOnDismissListener {
-////                            getSavedLocation()
-////                        }
-////                        .show()
-////
-////
-////                } else {
-////                    getLocationWhileGPSEnabled()
-////                }
-////
-////            }
-////            .addOnFailureListener {
-////                Log.e("CompassFragment", "getLocation: $it")
-////            }
-////            .addOnCanceledListener {
-////                Log.e("CompassFragment", "getLocation: operation canceled")
-////            }
-//
-//
-//        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-//            AlertDialog.Builder(requireContext())
-//                .setMessage("GPS yoqilmagan. Iltimos ilova to'g'ri ishlashi uchun GPSni yoqishingizni iltimos qilamiz.")
-//                .setPositiveButton(
-//                    "Sozlamalarni ochish"
-//                ) { _, _ -> this.startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-//                .setOnDismissListener{findNavController().popBackStack()}
-//                .show()
-//            getSavedLocation()
-//        } else {
-//            getLocationWhileGPSEnabled()
-//        }
-//
-//    }
-//
-//    fun getLocationWhileGPSEnabled() {
-//        locationManager =
-//            requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-//        if ((ContextCompat.checkSelfPermission(
-//                requireContext(),
-//                Manifest.permission.ACCESS_FINE_LOCATION
-//            ) != PackageManager.PERMISSION_GRANTED)
-//        ) {
-//            ActivityCompat.requestPermissions(
-//                requireContext() as Activity,
-//                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-//                locationPermissionCode
-//            )
-//        }
-//        locationManager.requestLocationUpdates(
-//            LocationManager.GPS_PROVIDER,
-//            5000,
-//            5f
-//        ) {
-//            location?.let {
-//                lattitude = it.latitude.toFloat()
-//                longtitude = it.longitude.toFloat()
-//            }
-//        }
-//        savePrefs()
-//    }
-//
-//    private fun savePrefs() {
-//        prefs = activity?.getPreferences(Context.MODE_PRIVATE)!!
-//        prefs.edit()
-//            .putString(LATITUDE, latitude)
-//            .putString(LONGITUDE, longitude)
-//            .putLong(LAST_LOCATION_UPDATE, System.currentTimeMillis())
-//            .apply()
-//    }
-//
-//    private fun getSavedLocation() {
-//        prefs = requireActivity().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
-//        latitude = prefs.getString(LATITUDE, null)
-//        longitude = prefs.getString(LONGITUDE, null)
-//        val lastUpdateTime = prefs.getLong(LAST_LOCATION_UPDATE, 0)
-//
-//        if (latitude != null && longitude != null
-//            && System.currentTimeMillis() - lastUpdateTime < 86400000 * 7
-//        ) {
-//            location = android.location.Location("")
-//            location!!.latitude = latitude!!.toDouble()
-//            location!!.longitude = longitude!!.toDouble()
-//            mLocation = com.azan.astrologicalCalc.Location(
-//                latitude!!.toDouble(),
-//                longitude!!.toDouble(),
-//                gmt.rawOffset / 3600000.toDouble(),
-//                0
-//            )
-//        }
-//    }
 
     private fun getDegree(): Double {
         val kaabaLng =

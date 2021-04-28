@@ -31,7 +31,7 @@ class Tasbih @JvmOverloads constructor(
     private var mAnimatedValue = 100
     private var mListYPos = arrayListOf<Float>()
     private var mListSizes = arrayListOf<Int>()
-    private var mIsAnimationStart = false
+    var mIsAnimationStart = false
 
 
     init {
@@ -59,28 +59,8 @@ class Tasbih @JvmOverloads constructor(
             512 * dp,
             520 * dp,
             552 * dp
-
-
-//            -36 * dp, //4+4
-//            -28 * dp, //4+28  +12
-//            4 * dp, //4+4
-//            12 * dp, //4+40
-//            56 * dp,
-//            64 * dp,
-//            120 * dp,
-//            128 * dp,
-//            196 * dp,
-//            204 * dp,
-//            284 * dp,
-//            292 * dp,
-//            360 * dp,
-//            368 * dp,
-//            424 * dp,
-//            432 * dp,
-//            476 * dp,
-//            484 * dp,
-//            516 * dp
         )
+
         mListSizes = arrayListOf(
             (4 * dp).toInt(),
             (28 * dp).toInt(),
@@ -102,33 +82,29 @@ class Tasbih @JvmOverloads constructor(
             (28 * dp).toInt(),
             (4 * dp).toInt(),
         )
-
     }
-
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
+        Log.d("TAG", "onDraw: mIsAnimationStart: $mIsAnimationStart")
         if (mIsAnimationStart) drawCircleWithAnimation(canvas)
         else drawCircle(canvas)
-
     }
 
-
     override fun onAnimationUpdate(animator: ValueAnimator?) {
-
+        Log.d("TAG", "onAnimationUpdate: ")
         mAnimatedValue = animator?.animatedValue as Int
         invalidate()
     }
 
-
     fun startAnimation() {
-        mValueAnimator.duration = 1000
+        Log.d("TAG", "startAnimation: ")
+        mValueAnimator.duration = 500
         mValueAnimator.interpolator = AccelerateDecelerateInterpolator()
         mValueAnimator.addUpdateListener(this)
         mIsAnimationStart = true
         mValueAnimator.start()
     }
-
 
     private fun drawCircleWithAnimation(canvas: Canvas?) {
         (1..17).forEach { i ->
@@ -184,6 +160,7 @@ class Tasbih @JvmOverloads constructor(
 
 
     private fun drawCircle(canvas: Canvas?) {
+        Log.d("TAG", "drawCircle: ")
         (3..17).forEach { i ->
             getBitmap(mListSizes[i - 1])?.let {
                 canvas?.drawBitmap(
