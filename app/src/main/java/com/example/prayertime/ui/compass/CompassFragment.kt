@@ -63,7 +63,6 @@ class CompassFragment : Fragment(), SensorEventListener {
         Log.d("CompassFragment:", "Compass Fragment: degree: $degree")
         viewModel = ViewModelProvider(this).get(CompassViewModel::class.java)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_compass, container, false)
-        binding.imgCompass.startAnimation()
         prefs = requireContext().getSharedPreferences(MY_PREFS, Context.MODE_PRIVATE)
         gmt = TimeZone.getDefault()
         locationHelper = LocationHelper(requireActivity())
@@ -138,10 +137,11 @@ class CompassFragment : Fragment(), SensorEventListener {
                     SensorManager.getOrientation(R, orientation)
                     azimuth = Math.toDegrees(orientation[0].toDouble()).toFloat()
                     Log.d(TAG, "onSensorChanged: degree: $degree")
-                    azimuth = ((azimuth + degree*2 + 360) % 360).toFloat()
+                    azimuth = ((azimuth + 360) % 360).toFloat()
+//                    azimuth = ((azimuth - degree + 360) % 360).toFloat()
 
                     val anim: Animation = RotateAnimation(
-                        -currentAzimuth, -azimuth,
+                        (-currentAzimuth + degree).toFloat(), -azimuth,
                         Animation.RELATIVE_TO_SELF, 0.5f,
                         Animation.RELATIVE_TO_SELF, 0.5f
                     )
@@ -150,7 +150,7 @@ class CompassFragment : Fragment(), SensorEventListener {
                     anim.duration = 500
                     anim.repeatCount = 0
                     anim.fillAfter = true
-                    binding.imgCompass.startAnimation(anim)
+                    binding.ivNavigation.startAnimation(anim)
                 }
             }
         }
