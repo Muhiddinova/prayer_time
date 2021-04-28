@@ -28,6 +28,13 @@ class TasbeehFragment : Fragment() {
             gravity = Gravity.CENTER_VERTICAL
         }
 
+
+
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
         binding.root.setOnClickListener {
 
             binding.imgRound.startAnimation()
@@ -38,10 +45,7 @@ class TasbeehFragment : Fragment() {
             counter = 0
             binding.countTasbih.text = "0"
         }
-
-        return binding.root
     }
-
 
 }
 

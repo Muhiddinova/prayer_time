@@ -60,6 +60,7 @@ class PrayerTimeFragment : Fragment() {
     private var month: Int = 0
     private var dayOfMonth: Int = 0
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

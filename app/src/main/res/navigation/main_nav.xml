@@ -37,10 +37,10 @@
         android:label="kaba_online_fragment"
         tools:layout="@layout/fragment_mosque" />
     <fragment
-        android:id="@+id/prayerFragment"
-        android:name="com.example.prayertime.ui.prayer.PrayerFragment"
+        android:id="@+id/prayerNameFragment"
+        android:name="com.example.prayertime.ui.prayer.PrayerNameFragment"
         android:label="prayer_fragment"
-        tools:layout="@layout/fragment_prayer" />
+        tools:layout="@layout/fragment_prayer_name" />
     <fragment
         android:id="@+id/prayerTimeFragment"
         android:name="com.example.prayertime.ui.prayerTime.PrayerTimeFragment"
@@ -54,21 +54,30 @@
         tools:layout="@layout/fragment_calendar" />
     <fragment
         android:id="@+id/mediaFragment"
-        android:name="com.example.prayertime.ui.audio.MediaFragment"
+        android:name="com.example.prayertime.ui.media.MediaFragment"
         android:label="MediaFragment"
         tools:layout="@layout/fragment_media" />
     <fragment
         android:id="@+id/audioFragment"
-        android:name="com.example.prayertime.ui.audio.AudioFragment"
+        android:name="com.example.prayertime.ui.media.AudioFragment"
         android:label="AudioFragment" />
     <fragment
         android:id="@+id/radioFragment2"
-        android:name="com.example.prayertime.ui.audio.RadioFragment"
+        android:name="com.example.prayertime.ui.media.RadioFragment"
         android:label="RadioFragment" />
     <fragment
         android:id="@+id/youTubeFragment"
-        android:name="com.example.prayertime.ui.audio.YouTubeFragment"
+        android:name="com.example.prayertime.ui.media.YouTubeFragment"
         android:label="YouTubeFragment" />
+    <fragment
+        android:id="@+id/prayerFragment"
+        android:name="com.example.prayertime.ui.prayer.PrayerFragment"
+        android:label="PrayerFragment"
+        tools:layout="@layout/fragment_prayer"/>
+    <fragment
+        android:id="@+id/prayerList"
+        android:name="com.example.prayertime.ui.prayer.PrayerList"
+        android:label="PrayerList" />
 
 
 </navigation>

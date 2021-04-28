@@ -13,12 +13,6 @@ class Notification(private val context: Context) {
 
     fun makeNotification() {
 
-//        val intent = Intent(context, MainActivity::class.java)
-//        intent.apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        }
-//        val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-
         val builder = NotificationCompat.Builder(context, "1")
             .setSmallIcon(R.drawable.ic_baseline_notifications_24)
             .setContentTitle("Namoz vaqti")
